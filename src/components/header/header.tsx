@@ -1,21 +1,22 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { QwikLogo } from '../icons/qwik';
+import { Logo } from '../icons/logo';
 import styles from './header.css?inline';
 
 export default component$(() => {
   useStylesScoped$(styles);
 
   return (
-    <header>
-      <div class="logo">
+    <header class={' border-b flex border-gray-100 '}>
+      <div class="logo ">
         <a href="https://qwik.builder.io/" target="_blank" title="qwik">
-          <QwikLogo />
+          <Logo />
         </a>
       </div>
       <ul>
         <li>
           <a href="https://qwik.builder.io/docs/components/overview/" target="_blank">
             Docs
+
           </a>
         </li>
         <li>

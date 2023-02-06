@@ -15,7 +15,8 @@ export const RouterHead = component$(() => {
       <link rel="canonical" href={loc.href} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      <script async src="https://embed.runkit.com" />
+      <link rel="preconnect" href="https://rsms.me/" />
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 
       {head.meta.map((m) => (
         <meta {...m} />
