@@ -1,1 +1,1 @@
-export const SOCKET_ENDPOINT = import.meta.env.VITE_SOCKET_ENDPOINT ?? ''
+export const SOCKET_ENDPOINT = import.meta.env.VITE_SOCKET_ENDPOINT ?? 'https://goldfish-app-4pw93.ondigitalocean.app'
