@@ -40,7 +40,7 @@ class PlaygroundProvider extends ProviderClass {
       
 
       http.listen(3000, function () {
-        console.log('listening on *:3000');
+        console.log('listening on *:3000',WORKSPACE_SOCKET_URL);
       });
     });
     _defineProperty(this, "delaySendMessage", (miliseconds, eventName, payload) => new Promise(res => setTimeout(() => {

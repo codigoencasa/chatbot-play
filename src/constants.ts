@@ -1,1 +1,1 @@
-export const SOCKET_ENDPOINT = process.env.SOCKET_URI ?? 'https://aad4-92-58-33-153.ngrok.io'
+export const SOCKET_ENDPOINT = import.meta.env.VITE_SOCKET_ENDPOINT ?? ''
