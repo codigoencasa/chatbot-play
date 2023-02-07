@@ -1,16 +1,29 @@
 import {
   component$,
+  noSerialize,
   useClientEffect$,
+  useContext,
   useSignal,
   useTask$,
 } from "@builder.io/qwik";
+import { GeneralCTX } from "~/contexts/general.ctx";
 import { SAMPLE_CODE } from "~/data/code-example";
 declare global {
   let RunKit: any;
 }
 
+export const OverlayRunkit = component$((props:{runkitEmbed:any}) => {
+  const stateGeneral = useContext(GeneralCTX);
+  return(<div class={'bg-red-400'}>{stateGeneral.runkitrunning ? 'FUNCIONA':'APAGADO'}
+    <button onClick$={() => props.runkitEmbed.value?.evaluate()}>TEST</button> 
+  
+  </div>)
+})
+
 export default component$((props: { preamble: string }) => {
   const stateHeight = useSignal(0);
+  const runkitEmbed = useSignal<any>()
+  const stateGeneral = useContext(GeneralCTX);
 
   useTask$(({ track }) => {
     track(() => stateHeight.value);
@@ -31,21 +44,28 @@ export default component$((props: { preamble: string }) => {
         preamble: props.preamble,
         gutterStyle: "inside",
         source: SAMPLE_CODE,
+        hidesEndpointLogs:true,
+        hidesActionButton:true
       });
 
-      notebook.onEvaluate = () => {};
+      runkitEmbed.value = noSerialize(notebook)
+      notebook.onEvaluate = () => {
+        stateGeneral.runkitrunning = true
+        setTimeout(() =>   stateGeneral.runkitrunning = false, 55000)
+      };
+
+      notebook.destroy = () => console.log('⚡⚡')
+
       notebook.onLoad = () => {
-        const frame = document.querySelector("iframe");
-        console.log("Loaed", frame);
-        if (frame) {
-          const new_style_element = document.createElement("style");
-          new_style_element.textContent = ".my-class { display: none; }";
-          console.log("🤣🤣🤣", frame);
-          frame?.contentDocument?.head.appendChild(new_style_element);
-        }
+      
       };
     });
   });
 
-  return <div class={"h-full bg-white p-4 drop-shadow-xl rounded-lg"} id="runkit-id"></div>;
+  return (
+    <>
+    <OverlayRunkit runkitEmbed={runkitEmbed} />
+    <div class={"h-full bg-white p-4 drop-shadow-xl rounded-lg"} id="runkit-id"></div>
+    </>
+  );
 });

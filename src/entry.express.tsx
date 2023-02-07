@@ -33,8 +33,13 @@ const { router, notFound } = createQwikCity({ render, qwikCityPlan });
 const app = express();
 
 const server = new Server(app);
-const io = new ServerIO(server);
-io.on("connection", handleIOConnection(io));
+const io = new ServerIO(server,
+  {
+    cors: {
+      origin: "*"
+    }
+  });
+io.on("connection", handleIOConnection());
 
 
 // Enable gzip compression

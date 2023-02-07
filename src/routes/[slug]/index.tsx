@@ -1,34 +1,24 @@
-import { component$, useClientEffect$, useStore } from "@builder.io/qwik";
+import { component$, useClientEffect$, useContextProvider, useStore } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { io } from "socket.io-client";
 import Device from "~/components/device/device";
 import { PREAMBLE } from "~/data/preamble";
 import { SOCKET_ENDPOINT } from "~/constants";
 import Runkit from "~/components/runkit/runkit";
+import { GeneralCTX, IGeneralCtx } from "~/contexts/general.ctx";
 
 export default component$(() => {
   const location = useLocation();
-  const state = useStore<{ messages: any[]; slug: string }>({
-    messages: [],
-    slug: "",
-  });
+
+  const stateGeneral = useStore<IGeneralCtx>({
+    messages:[],
+    runkitrunning:false,
+    slug:''
+  })
+  useContextProvider(GeneralCTX, stateGeneral)
 
   useClientEffect$(() => {
     const slug = location.params?.slug ?? null;
-    state.slug = slug;
-    const socket = io(SOCKET_ENDPOINT, {
-      reconnectionDelayMax: 10000,
-    });
-
-
-    console.log('----------->',SOCKET_ENDPOINT, slug)
-    socket.emit("join", { slug: slug });
-    socket.on("pong", (arg: { message: any }) => {
-      const currentMsg = state.messages;
-      state.messages = [...currentMsg, arg.message];
-      console.log("Pong componente...", arg);
-    });
-
+    stateGeneral.slug = slug
   });
 
   return (
@@ -37,22 +27,11 @@ export default component$(() => {
     >
       <div class={"w-full relative z-20 "}>
         <Runkit
-          preamble={PREAMBLE({ slug: state.slug, socketUrl: SOCKET_ENDPOINT })}
+          preamble={PREAMBLE({ slug: stateGeneral.slug, socketUrl: SOCKET_ENDPOINT })}
         />
       </div>
       <div class={"w-1/2 relative  bg-gray-100 "}>
-        <Device
-          messages={[
-            {
-              message: "Hola",
-              direction:'in'
-            },
-            {
-              message: "Buenas",
-              direction:'out'
-            }
-          ]}
-        />
+        <Device  />
       </div>
     </div>
   );
