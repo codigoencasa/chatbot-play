@@ -1,17 +1,13 @@
 import {
   $,
   component$,
-  noSerialize,
-  useClientEffect$,
+  QRL,
   useContext,
   useSignal,
-  useStore,
 } from "@builder.io/qwik";
-import { io } from "socket.io-client";
 // @ts-ignore
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
-import { SOCKET_ENDPOINT } from "~/constants";
-import { GeneralCTX } from "~/contexts/general.ctx";
+import { ExecuteCtx } from "~/contexts/execute.ctx";
 
 export const DeviceHeader = () => {
   return (
@@ -40,8 +36,7 @@ export const DeviceHeader = () => {
   );
 };
 
-export const BodyFooter = component$(() => {
-  const stateGeneral = useContext(GeneralCTX);
+export const BodyFooter = component$((props: { messages: any[] }) => {
   return (
     <div
       class={
@@ -49,7 +44,7 @@ export const BodyFooter = component$(() => {
       }
     >
       <ul class={"flex flex-col gap-2 font-semibold w-full"}>
-        {stateGeneral.messages.map((msg: any) => (
+        {props.messages.map((msg: any) => (
           <li
             class={{
               "w-full flex justify-end": msg?.direction === "in",
@@ -73,32 +68,16 @@ export const BodyFooter = component$(() => {
   );
 });
 
-export const DeviceFooter = component$((props: { socket: any }) => {
-  const stateGeneral = useContext(GeneralCTX);
-
-  const store = useStore({
-    value: "",
-  });
-
-  const handleMessage = $(() => {
-    const payload = {
-      slug: stateGeneral.slug,
-      message: store.value,
-    };
-
-    stateGeneral.messages = stateGeneral.messages.concat({
-      message: store.value,
-      direction: "in",
-    });
-
-    store.value = "";
-    props.socket.value?.emit("ping", payload);
-  });
+export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
+  const store = useSignal<string>();
 
   return (
     <form
       preventdefault:submit
-      onSubmit$={handleMessage}
+      onSubmit$={() => {
+        props.sendMessage(store.value)
+        store.value = ''
+      }}
       class={
         "bg-white h-[60px] content-center items-center flex gap-2  rounded-b-lg justify-between "
       }
@@ -115,24 +94,12 @@ export const DeviceFooter = component$((props: { socket: any }) => {
 });
 
 export default component$(() => {
-  const stateGeneral = useContext(GeneralCTX);
-  const stateIo = useSignal<any>();
+  const state = useContext(ExecuteCtx);
 
-  useClientEffect$(() => {
-    const socket = io(SOCKET_ENDPOINT, {
-      reconnectionDelayMax: 10000,
-    });
-
-
-    stateIo.value = noSerialize(socket);
-
-    socket.emit("join", { slug: stateGeneral.slug });
-    socket.on("pong", (arg: { message: string }) => {
-      stateGeneral.messages = stateGeneral.messages.concat({
-        message: arg.message,
-        direction: "out",
-      });
-      console.log("Pong componente...", arg);
+  const sendMessage$ = $((inMessage: any) => {
+    state.messages = state.messages.concat({
+      message: inMessage,
+      direction: "in",
     });
   });
 
@@ -140,10 +107,11 @@ export default component$(() => {
     <div
       class={
         "bg-white drop-shadow-xl  flex flex-col justify-between  h-full rounded-lg w-full"
-      }>
+      }
+    >
       <DeviceHeader />
-      <BodyFooter />
-      <DeviceFooter socket={stateIo} />
+      <BodyFooter messages={state.messages} />
+      <DeviceFooter sendMessage={sendMessage$} />
     </div>
   );
 });

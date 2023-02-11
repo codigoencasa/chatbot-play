@@ -1,38 +1,81 @@
-import { component$, useClientEffect$, useContextProvider, useStore } from "@builder.io/qwik";
+import {
+  component$,
+  useClientEffect$,
+  useContextProvider,
+  useStore,
+} from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import Device from "~/components/device/device";
-import { PREAMBLE } from "~/data/preamble";
-import { SOCKET_ENDPOINT } from "~/constants";
-import Runkit from "~/components/runkit/runkit";
+import { QPlayground } from "~/components/q-playground/q-playground";
+import { ExecuteCtx, IExecute } from "~/contexts/execute.ctx";
 import { GeneralCTX, IGeneralCtx } from "~/contexts/general.ctx";
+import { initEsbuild } from "~/utils/execute-code";
 
 export default component$(() => {
-  const location = useLocation();
+  const PREAMBLE = `
+  (() => {
+  
+    globalThis.process = {
+      env: {
+        NODE_ENV: "dev",
+      },
+      stdout: {
+        isTTY: null
+      },
+      cwd:() => null
+    }
+  
+    if(typeof fs !== 'undefined') fs.prototype.createWriteStream = () => console.log('createWriteStream')
+  
+  })()`
+
+  const CODE =`
+  const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot')
+
+  const WebWhatsappProvider = require('@bot-whatsapp/provider/web-whatsapp')
+  const MockAdapter = require('@bot-whatsapp/database/mock')
+  
+  const flowPrincipal = addKeyword(['hola', 'ole', 'alo'])
+      .addAnswer(['Hola, bienvenido a mi tienda', '¿Como puedo ayudarte?'])
+      .addAnswer(['Tengo:', 'Zapatos', 'Bolsos', 'etc ...'])
+  
+  /**
+   * Esta es la funcion importante es la que realmente inicia
+   * el chatbot.
+   */
+  const adapterProvider = createProvider(WebWhatsappProvider)
+  const main = async () => {
+      const adapterDB = new MockAdapter()
+      const adapterFlow = createFlow([flowPrincipal])
+
+      createBot({
+          flow: adapterFlow,
+          provider: adapterProvider,
+          database: adapterDB,
+      })
+
+  }
+  
+  main()
+  `
+
+  const state = useStore<IExecute>({ code: CODE, loading: false, preamble:PREAMBLE, messages:[] });
 
   const stateGeneral = useStore<IGeneralCtx>({
     messages:[],
     runkitrunning:false,
     slug:''
   })
+  
+  useContextProvider(ExecuteCtx, state);
   useContextProvider(GeneralCTX, stateGeneral)
 
+  const location = useLocation();
   useClientEffect$(() => {
     const slug = location.params?.slug ?? null;
-    stateGeneral.slug = slug
+    state.workspace = slug
+
+    initEsbuild()();
   });
 
-  return (
-    <div
-      class={"relative bg-gray-100 p-2 px-4 h-[calc(100vh_-_60px)] flex gap-2"}
-    >
-      <div class={"w-full relative z-20 "}>
-        <Runkit
-          preamble={PREAMBLE({ slug: stateGeneral.slug, socketUrl: SOCKET_ENDPOINT })}
-        />
-      </div>
-      <div class={"w-1/2 relative  bg-gray-100 "}>
-        <Device  />
-      </div>
-    </div>
-  );
+  return <QPlayground />;
 });
