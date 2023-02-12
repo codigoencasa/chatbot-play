@@ -4,6 +4,10 @@ import { executeCode, getCompileCode } from "~/utils/execute-code";
 import Device from "../device/device";
 import { QMonaco } from "./q-monaco/q-monaco";
 
+declare global {
+  var WSBOT: any
+}
+
 export const QPlayground = component$(() => {
   const state = useContext(ExecuteCtx);
 
@@ -12,7 +16,7 @@ export const QPlayground = component$(() => {
       const getLiterraly = state.messages.pop();
       getLiterraly?.message;
       state.after = `
-          await adapterProvider.delaySendMessage(10, 'message', {
+          await window.WSBOT.delaySendMessage(10, 'message', {
             from: '000',
             body: '${getLiterraly?.message}',
         })`;
@@ -34,6 +38,14 @@ export const QPlayground = component$(() => {
   useClientEffect$(({ track }) => {
     track(() => state.messages);
     handlePlay();
+    window.WSBOT = {
+      bridgeEvents: new BroadcastChannel("bridge-events"),
+  
+    }
+    window.WSBOT.bridgeEvents.onmessage = (messageEvent: any) => {
+      console.log('........................', messageEvent.data)
+    }
+
   });
 
   /**

@@ -28,7 +28,7 @@ export const QMonaco = component$(() => {
       selectOnLineNumbers: true,
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
-      fontSize: "16px",
+      fontSize: "14px",
     },
     loadingMessage: "🚀 Cargando...",
   });

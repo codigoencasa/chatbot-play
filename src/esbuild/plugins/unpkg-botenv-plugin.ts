@@ -5,8 +5,8 @@ export const NPM_BROWSER: { [key: string]: string } = {
   crypto: "https://mp3musica.s3.amazonaws.com/crypto-fake.js",
   console: "https://mp3musica.s3.amazonaws.com/console-fake.js",
   fs: "https://mp3musica.s3.amazonaws.com/fs-fake.js",
-  "@bot-whatsapp/provider/mock": "https://unpkg.com/@bot-whatsapp/provider@0.1.21/lib/mock/index.cjs",
-  "@bot-whatsapp/provider/web-whatsapp": "https://unpkg.com/@bot-whatsapp/provider@0.1.21/lib/mock/index.cjs",
+  "@bot-whatsapp/provider/mock": "http://localhost:5173/sdk/provider.playground.js",
+  "@bot-whatsapp/provider/web-whatsapp": "http://localhost:5173/sdk/provider.playground.js",
   "@bot-whatsapp/database/mock": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
 };
 
