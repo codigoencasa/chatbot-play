@@ -5,15 +5,16 @@ import Device from "../device/device";
 import { QMonaco } from "./q-monaco/q-monaco";
 
 declare global {
-  var WSBOT: any
+  let WSBOT: any
 }
 
 export const QPlayground = component$(() => {
   const state = useContext(ExecuteCtx);
 
   const handlePlay = $(async () => {
+    state.messages = []
     if (state.messages.length) {
-      const getLiterraly = state.messages.pop();
+      const getLiterraly = state.messages[state.messages.length -1];
       getLiterraly?.message;
       state.after = `
           await window.WSBOT.delaySendMessage(10, 'message', {
@@ -38,14 +39,6 @@ export const QPlayground = component$(() => {
   useClientEffect$(({ track }) => {
     track(() => state.messages);
     handlePlay();
-    window.WSBOT = {
-      bridgeEvents: new BroadcastChannel("bridge-events"),
-  
-    }
-    window.WSBOT.bridgeEvents.onmessage = (messageEvent: any) => {
-      console.log('........................', messageEvent.data)
-    }
-
   });
 
   /**

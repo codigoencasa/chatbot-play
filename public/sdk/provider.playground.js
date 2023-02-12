@@ -1,13 +1,13 @@
 const { ProviderClass } = require('@bot-whatsapp/bot')
 
 class MockProvider extends ProviderClass {
-    bridgeEvents
     constructor() {
         super()
         if (typeof window !== 'undefined') this.init()
     }
 
     init = () => {
+        console.log(`ESTO_____AQUI___`)
         window.WSBOT.delaySendMessage = (miliseconds, eventName, payload) => {
             return new Promise((res) =>
                 setTimeout(() => {
