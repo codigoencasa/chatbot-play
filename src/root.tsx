@@ -22,13 +22,19 @@ export const PREAMBLE = `
 })()`
 
 export const CODE = `
+
+
+
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot')
 
 const WebWhatsappProvider = require('@bot-whatsapp/provider/web-whatsapp')
 const MockAdapter = require('@bot-whatsapp/database/mock')
 
 const flowPrincipal = addKeyword(['hola', 'ole', 'alo'])
-    .addAnswer(['Hola, bienvenido a mi tienda', '¿Como puedo ayudarte?'])
+    .addAnswer('Cual es tu mail',{ capture: true }, async (ctx, {fallBack}) => {
+        console.log('--->',ctx)
+        if(!ctx.body.includes('@')) return fallBack()
+    })
     .addAnswer(['Tengo:', 'Zapatos', 'Bolsos', 'etc ...'])
 
 /**
@@ -49,6 +55,9 @@ const main = async () => {
 }
 
 main()
+
+
+
 `
 
 

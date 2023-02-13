@@ -32,7 +32,6 @@ export const QPlayground = component$(() => {
       MAIN_FUNCTION_PRINCIPAL_SCOPE().then()
     `;
     const resultExection = await getCompileCode(fullCode, "index.js")();
-    console.log(`🙌🙌🙌`,resultExection)
     state.result = resultExection?.outputFiles[0].text;
     if (state.result) await executeCode(state.result)
     state.running = false
@@ -42,6 +41,7 @@ export const QPlayground = component$(() => {
     track(() => state.running);
     handlePlay();
   });
+  
 
   /**
    * RUN Transformation and runtime

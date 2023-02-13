@@ -11,8 +11,6 @@ class MockProvider extends ProviderClass {
             return new Promise((res) =>
                 setTimeout(() => {
                     this.emit(eventName, payload)
-                    console.log({ eventName })
-                    console.log({ payload })
                     res
                 }, miliseconds)
             )

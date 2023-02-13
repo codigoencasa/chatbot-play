@@ -24,7 +24,7 @@ export default component$(() => {
       <div class={"w-full relative z-20 "}>
         {/* <Playground$ /> */}
         {/* <Runkit
-          preamble={PREAMBLE({ slug: stateGeneral.slug, socketUrl: SOCKET_ENDPOINT })}
+          preamble={PREAMBLE({ slug: stateGeneral.slug, socketUrl: VITE_URL })}
         /> */}
       </div>
       {/* <div class={"w-1/2 relative  bg-gray-100 "}>

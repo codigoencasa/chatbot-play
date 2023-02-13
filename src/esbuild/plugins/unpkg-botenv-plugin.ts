@@ -1,21 +1,21 @@
 import * as esbuild from "esbuild-wasm";
-import { SOCKET_ENDPOINT } from "~/constants";
+import { VITE_URL } from "~/constants";
 
 export const NPM_BROWSER: { [key: string]: string } = {
   "node:events": "https://unpkg.com/events@3.3.0/events.js",
-  crypto: "https://mp3musica.s3.amazonaws.com/crypto-fake.js",
+  crypto: `${VITE_URL}/sdk/crypto.playground.js`,
   console: "https://mp3musica.s3.amazonaws.com/console-fake.js",
-  fs: "https://mp3musica.s3.amazonaws.com/fs-fake.js",
-  "@adiwajshing/baileys": `${SOCKET_ENDPOINT}/sdk/void.playground.js`,
-  "@bot-whatsapp/portal": `${SOCKET_ENDPOINT}/sdk/portal.playground.js`,
-  "@bot-whatsapp/provider/mock": `${SOCKET_ENDPOINT}/sdk/provider.playground.js`,
-  "@bot-whatsapp/provider/web-whatsapp": `${SOCKET_ENDPOINT}/sdk/provider.playground.js`,
-  "@bot-whatsapp/provider/baileys": `${SOCKET_ENDPOINT}/sdk/provider.playground.js`,
-  "@bot-whatsapp/provider/venom": `${SOCKET_ENDPOINT}/sdk/provider.playground.js`,
-  "@bot-whatsapp/database/mock": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
+  fs: `${VITE_URL}/sdk/fs.playground.js`,
+  "@adiwajshing/baileys": `${VITE_URL}/sdk/void.playground.js`,
+  "@bot-whatsapp/portal": `${VITE_URL}/sdk/portal.playground.js`,
+  "@bot-whatsapp/provider/mock": `${VITE_URL}/sdk/provider.playground.js`,
+  "@bot-whatsapp/provider/web-whatsapp": `${VITE_URL}/sdk/provider.playground.js`,
+  "@bot-whatsapp/provider/baileys": `${VITE_URL}/sdk/provider.playground.js`,
+  "@bot-whatsapp/provider/venom": `${VITE_URL}/sdk/provider.playground.js`,
+  "@bot-whatsapp/database/mock": `${VITE_URL}/sdk/database.playground.js`,
   "@bot-whatsapp/database/json": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
   "@bot-whatsapp/database/mongo": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
-  "@bot-whatsapp/database/mysql": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
+  "@bot-whatsapp/database/mysql": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs"
 };
 
 export const mapMockModule = (args: any) => {

@@ -9,26 +9,20 @@ declare global {
 }
 export function loadWinEvent(cb?: Function) {
   if (window) {
+    window.WSBOT = {}
     window.WSBOT = {
       bridgeEvents: new BroadcastChannel("bridge-events"),
     };
-
     window.WSBOT.bridgeEvents.onmessage = cb;
   }
+  
 }
 
 export function initEsbuild() {
-  return async () => {
-    await esbuild
-      .initialize({
-        worker: false,
-        wasmURL: "https://unpkg.com/esbuild-wasm@0.14.54/esbuild.wasm",
-      })
-      .then(() => {
-        loadWinEvent();
-      })
-      .catch(() => console.log("ERROR_INIT"));
-  };
+  return esbuild.initialize({
+    worker: false,
+    wasmURL: "https://unpkg.com/esbuild-wasm@0.14.54/esbuild.wasm",
+  })
 }
 
 export async function executeCode(codeString: string) {
@@ -51,7 +45,7 @@ export function getCompileCode(rawCode: string, entryPoint: string) {
       });
       return result;
     } catch (error) {
-      console.log(`🔴ERROR:`,error)
+      console.log(`🔴ERROR:`, error);
       return;
     }
   };
