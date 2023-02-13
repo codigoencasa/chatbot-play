@@ -1,9 +1,8 @@
-import { component$, useContextProvider, useStore, useStyles$ } from '@builder.io/qwik';
+import { component$,  useStyles$ } from '@builder.io/qwik';
 import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
 import { RouterHead } from './components/router-head/router-head';
 
 import globalStyles from '~/assets/styles/global.css?inline';
-import { ExecuteCtx, IExecute } from './contexts/execute.ctx';
 
 export const PREAMBLE = `
 (() => {
@@ -60,9 +59,7 @@ export default component$(() => {
    *
    * Dont remove the `<head>` and `<body>` elements.
    */
-  const state = useStore<IExecute>({ code: CODE, loading: false, preamble: PREAMBLE, messages: [] });
 
-  useContextProvider(ExecuteCtx, state);
   useStyles$(globalStyles);
   return (
     <QwikCityProvider>

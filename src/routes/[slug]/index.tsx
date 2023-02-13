@@ -1,16 +1,20 @@
 import {
   component$,
   useClientEffect$,
-  useContext,
+  useContextProvider,
+  useStore,
 } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { QPlayground } from "~/components/q-playground/q-playground";
-import { ExecuteCtx } from "~/contexts/execute.ctx";
+import { ExecuteCtx, IExecute } from "~/contexts/execute.ctx";
+import { CODE, PREAMBLE } from "~/root";
 import { initEsbuild, loadWinEvent } from "~/utils/execute-code";
 
 export default component$(() => {
 
-  const state = useContext(ExecuteCtx)
+  const state = useStore<IExecute>({ code: CODE, loading: false, preamble: PREAMBLE, messages: [] });
+
+  useContextProvider(ExecuteCtx, state);
 
   const location = useLocation();
   useClientEffect$(() => {
