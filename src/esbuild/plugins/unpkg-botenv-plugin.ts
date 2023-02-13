@@ -8,14 +8,15 @@ export const NPM_BROWSER: { [key: string]: string } = {
   fs: `${VITE_URL}/sdk/fs.playground.js`,
   "@adiwajshing/baileys": `${VITE_URL}/sdk/void.playground.js`,
   "@bot-whatsapp/portal": `${VITE_URL}/sdk/portal.playground.js`,
-  "@bot-whatsapp/provider/mock": `${VITE_URL}/sdk/provider.playground.js`,
+  "@bot-whatsapp/provider/mock": `${VITE_URL}/sdk/provider.playground-2.js`,
   "@bot-whatsapp/provider/web-whatsapp": `${VITE_URL}/sdk/provider.playground.js`,
   "@bot-whatsapp/provider/baileys": `${VITE_URL}/sdk/provider.playground.js`,
   "@bot-whatsapp/provider/venom": `${VITE_URL}/sdk/provider.playground.js`,
-  "@bot-whatsapp/database/mock": `${VITE_URL}/sdk/database.playground.js`,
-  "@bot-whatsapp/database/json": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
-  "@bot-whatsapp/database/mongo": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
-  "@bot-whatsapp/database/mysql": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs"
+  "@bot-whatsapp/database/mock": `${VITE_URL}/sdk/database.playground-2.js`,
+  "@bot-whatsapp/database/json": `${VITE_URL}/sdk/database.playground.js`,
+  "@bot-whatsapp/database/mongo": `${VITE_URL}/sdk/database.playground.js`,
+  "@bot-whatsapp/database/mysql": `${VITE_URL}/sdk/database.playground.js`,
+  "@bot-whatsapp/bot": `${VITE_URL}/sdk/bot.playground-2.js`
 };
 
 export const mapMockModule = (args: any) => {

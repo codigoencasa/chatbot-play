@@ -65,6 +65,7 @@ class JsonFileAdapter {
      * @param {*} ctx
      */
     save = async (ctx) => {
+        console.log(`🚀🚀🚀🚀 GUARDANDO...`,ctx)
         this.listHistory.push(ctx)
         await this.db.addItems([
             {

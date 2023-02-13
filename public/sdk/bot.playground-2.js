@@ -626,6 +626,7 @@ let CoreClass$1 = class CoreClass {
             async (message = null) => {
                 QueuePrincipal.queue = [];
                 flag.fallBack = true;
+                console.log('😎😎😎😎 FALLBACK ME EXECUTE')
                 await this.sendProviderAndSave(from, {
                     ...prevMsg,
                     answer: typeof message === 'string' ? message : message?.body ?? prevMsg.answer,
@@ -725,7 +726,7 @@ let CoreClass$1 = class CoreClass {
     sendProviderAndSave = async (numberOrId, ctxMessage) => {
         const { answer } = ctxMessage;
         await this.providerClass.sendMessage(numberOrId, answer, ctxMessage);
-        console.log('🫰🫰🫰',{ ...ctxMessage, from: numberOrId })
+        console.log('🫰🫰🫰_',{ ...ctxMessage, from: numberOrId })
         await this.databaseClass.save({ ...ctxMessage, from: numberOrId });
         return
     }
