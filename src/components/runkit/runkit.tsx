@@ -9,7 +9,9 @@ import {
 import { GeneralCTX } from "~/contexts/general.ctx";
 import { SAMPLE_CODE } from "~/data/code-example";
 declare global {
-  let RunKit: any;
+  interface Window {
+    RunKit: any;
+  }
 }
 
 export const OverlayRunkit = component$((props:{runkitEmbed:any}) => {

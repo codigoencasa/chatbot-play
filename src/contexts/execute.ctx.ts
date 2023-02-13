@@ -5,6 +5,7 @@ export interface IExecute {
     result?:string
     preamble?:string
     after?:string
+    running?:boolean
     workspace?:string
     messages: { message: string; direction: "in" | "out" }[];
 }

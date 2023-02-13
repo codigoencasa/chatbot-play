@@ -2,14 +2,18 @@ import * as esbuild from "esbuild-wasm";
 import { unpkgBotenvPlugin, unpkgFetchPlugin } from "~/esbuild/plugins";
 export const swc: any = null;
 
-export function loadWinEvent(cb?:Function) {
+declare global {
+  interface Window {
+    WSBOT: any;
+  }
+}
+export function loadWinEvent(cb?: Function) {
   if (window) {
-    console.log('**WINDOW_LOADED**')
     window.WSBOT = {
       bridgeEvents: new BroadcastChannel("bridge-events"),
-    }
+    };
 
-    window.WSBOT.bridgeEvents.onmessage = cb
+    window.WSBOT.bridgeEvents.onmessage = cb;
   }
 }
 
@@ -17,12 +21,11 @@ export function initEsbuild() {
   return async () => {
     await esbuild
       .initialize({
-        worker: true,
+        worker: false,
         wasmURL: "https://unpkg.com/esbuild-wasm@0.14.54/esbuild.wasm",
       })
       .then(() => {
-        loadWinEvent()
-        console.log("INIT READY");
+        loadWinEvent();
       })
       .catch(() => console.log("ERROR_INIT"));
   };
@@ -40,7 +43,7 @@ export function getCompileCode(rawCode: string, entryPoint: string) {
         entryPoints: [`${entryPoint}`],
         bundle: true,
         write: false,
-        minify: true,
+        minify: false,
         outdir: "/",
         plugins: [unpkgBotenvPlugin(), unpkgFetchPlugin(rawCode)],
         metafile: true,
@@ -48,6 +51,7 @@ export function getCompileCode(rawCode: string, entryPoint: string) {
       });
       return result;
     } catch (error) {
+      console.log(`🔴ERROR:`,error)
       return;
     }
   };

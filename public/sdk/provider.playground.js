@@ -7,7 +7,6 @@ class MockProvider extends ProviderClass {
     }
 
     init = () => {
-        console.log(`ESTO_____AQUI___`)
         window.WSBOT.delaySendMessage = (miliseconds, eventName, payload) => {
             return new Promise((res) =>
                 setTimeout(() => {
@@ -22,7 +21,6 @@ class MockProvider extends ProviderClass {
     }
 
     sendMessage = async (userId, message) => {
-        console.log(`Enviando... ${userId}, ${message}`)
         window.WSBOT.bridgeEvents.postMessage({ userId, message });
         return Promise.resolve({ userId, message })
     }

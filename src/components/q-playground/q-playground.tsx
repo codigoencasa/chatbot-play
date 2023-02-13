@@ -5,14 +5,16 @@ import Device from "../device/device";
 import { QMonaco } from "./q-monaco/q-monaco";
 
 declare global {
-  let WSBOT: any
+  interface Window {
+    WSBOT: any;
+  }
 }
 
 export const QPlayground = component$(() => {
   const state = useContext(ExecuteCtx);
 
   const handlePlay = $(async () => {
-    state.messages = []
+    if(!state.running) return
     if (state.messages.length) {
       const getLiterraly = state.messages[state.messages.length -1];
       getLiterraly?.message;
@@ -21,8 +23,6 @@ export const QPlayground = component$(() => {
             from: '000',
             body: '${getLiterraly?.message}',
         })`;
-
-      console.log(state.after);
     }
     const mergeCode = [state.preamble, state.code, state.after].join(" \n ");
     const fullCode = `
@@ -32,12 +32,14 @@ export const QPlayground = component$(() => {
       MAIN_FUNCTION_PRINCIPAL_SCOPE().then()
     `;
     const resultExection = await getCompileCode(fullCode, "index.js")();
+    console.log(`🙌🙌🙌`,resultExection)
     state.result = resultExection?.outputFiles[0].text;
-    if (state.result) await executeCode(state.result);
+    if (state.result) await executeCode(state.result)
+    state.running = false
   });
 
   useClientEffect$(({ track }) => {
-    track(() => state.messages);
+    track(() => state.running);
     handlePlay();
   });
 
@@ -46,7 +48,7 @@ export const QPlayground = component$(() => {
    */
 
   return (
-    <div class={"flex gap-3"}>
+    <div class={"flex "}>
       <div class={"w-full border-r  border-gray-100 "}>
         <QMonaco />
       </div>

@@ -5,13 +5,19 @@ export const NPM_BROWSER: { [key: string]: string } = {
   crypto: "https://mp3musica.s3.amazonaws.com/crypto-fake.js",
   console: "https://mp3musica.s3.amazonaws.com/console-fake.js",
   fs: "https://mp3musica.s3.amazonaws.com/fs-fake.js",
+  "@adiwajshing/baileys": "http://localhost:5173/sdk/void.playground.js",
+  "@bot-whatsapp/portal": "http://localhost:5173/sdk/portal.playground.js",
   "@bot-whatsapp/provider/mock": "http://localhost:5173/sdk/provider.playground.js",
   "@bot-whatsapp/provider/web-whatsapp": "http://localhost:5173/sdk/provider.playground.js",
+  "@bot-whatsapp/provider/baileys": "http://localhost:5173/sdk/provider.playground.js",
+  "@bot-whatsapp/provider/venom": "http://localhost:5173/sdk/provider.playground.js",
   "@bot-whatsapp/database/mock": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
+  "@bot-whatsapp/database/json": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
+  "@bot-whatsapp/database/mongo": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
+  "@bot-whatsapp/database/mysql": "https://unpkg.com/@bot-whatsapp/database@0.1.21/lib/mock/index.cjs",
 };
 
 export const mapMockModule = (args: any) => {
-  console.log(`🚩`,args?.path)
   const moduleUrl = NPM_BROWSER[args?.path] ?? `https://unpkg.com/${args.path}`;
   return {
     namespace: "a",

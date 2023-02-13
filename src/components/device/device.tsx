@@ -9,18 +9,17 @@ import {
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 
-export const DeviceHeader = () => {
+export const DeviceHeader = component$(() => {
+  const state = useContext(ExecuteCtx);
   return (
     <div
       class={
-        "bg-[#128C7E] h-[60px] content-center items-center flex gap-2 px-2 rounded-t-lg justify-between "
-      }
-    >
+        "bg-[#128C7E] text-white h-[60px] content-center items-center flex gap-2 px-2 justify-between "
+      }>
       <div
         class={
-          "bg-white rounded-full flex items-center content-center w-[40px] h-[40px]"
-        }
-      >
+          "bg-white rounded-full flex items-center content-center w-[38px] h-[38px]"
+        }>
         <img
           class={"object-cover rounded-full"}
           width={38}
@@ -30,20 +29,24 @@ export const DeviceHeader = () => {
         />
       </div>
       <div class={" w-full flex content-center items-center px-2"}>
-        <span class={"text-white font-semibold"}>Bot</span>
+        <span class={" font-semibold"}>Bot</span>
+      </div>
+      <div>
+        <button onClick$={() => state.messages = []}>Limpiar</button>
       </div>
     </div>
   );
-};
+})
 
 export const BodyFooter = component$((props: { messages: any[] }) => {
+
   return (
     <div
       class={
         "bg-[#FEF3EE] overflow-y-auto h-full content-center  flex gap-2 p-3 justify-between "
       }
     >
-      <ul class={"flex flex-col gap-2 font-semibold w-full"}>
+      <ul class={"flex flex-col gap-2 font-normal w-full"}>
         {props.messages.map((msg: any) => (
           <li
             class={{
@@ -88,7 +91,7 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
         class={"outline-none w-full h-full rounded-b-lg px-2"}
         placeholder="Mensaje..."
       />
-      <button class={"bg-red-400"}>Enviar</button>
+      <button class={""}>Enviar</button>
     </form>
   );
 });
@@ -101,12 +104,13 @@ export default component$(() => {
       message: inMessage,
       direction: "in",
     });
+    state.running = true
   });
 
   return (
     <div
       class={
-        "bg-white drop-shadow-xl  flex flex-col justify-between  h-full rounded-lg w-full"
+        "bg-white  flex flex-col justify-between  h-full  w-full"
       }
     >
       <DeviceHeader />
