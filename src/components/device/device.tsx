@@ -1,7 +1,7 @@
 import {
   $,
   component$,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useContext,
   useSignal,
 } from "@builder.io/qwik";
@@ -9,6 +9,7 @@ import type { QRL } from "@builder.io/qwik";
 // @ts-ignore
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
+import { VITE_URL } from "~/constants";
 
 declare global {
   const Pusher: any;
@@ -105,30 +106,44 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
 export default component$(() => {
   const state = useContext(ExecuteCtx);
 
-  useClientEffect$(() => {
-    /**
-     * TODO: Refactorizar llevar a otro lado
-     */
-    const pusher = new Pusher("adb4202d50dff49b170a", {
-      cluster: "eu",
-    });
+  useBrowserVisibleTask$(() => {
+    // /**
+    //  * TODO: Refactorizar llevar a otro lado
+    //  */
+    // const pusher = new Pusher("adb4202d50dff49b170a", {
+    //   cluster: "eu",
+    // });
 
-    const channel = pusher.subscribe("my-channel");
-    channel.bind("provider-to-device", function (data: any) {
-      console.log("DEVICE:", JSON.stringify(data));
-    });
+    // const channel = pusher.subscribe("my-channel");
+    // channel.bind("provider-to-device", function (data: any) {
+    //   console.log("DEVICE:", data);
+    // });
   });
 
-  const sendMessage$ = $((inMessage: any) => {
+   const fakeAuthService = $(async (message:string) => {
+    await fetch(`${VITE_URL}/api/${state.workspace}`,{
+      method: 'POST',
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        "message": message
+      }),
+      redirect: 'follow'
+    })
+
+  })
+
+  const sendMessage$ = $(async (inMessage: any) => {
     state.messages = state.messages.concat({
       message: inMessage,
       direction: "in",
     });
-    state.running = true;
+    await fakeAuthService(inMessage)
   });
 
   return (
-    <div class={"bg-white  flex flex-col justify-between  h-full  w-full"}>
+    <div class={"bg-white flex flex-col justify-between  h-full  w-full"}>
       <DeviceHeader />
       <BodyFooter messages={state.messages} />
       <DeviceFooter sendMessage={sendMessage$} />

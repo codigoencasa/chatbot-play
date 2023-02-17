@@ -1,12 +1,11 @@
 import {
   component$,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useContextProvider,
   useStore,
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
-import { stat } from "fs";
 import { QPlayground } from "~/components/q-playground/q-playground";
 import { ExecuteCtx, IExecute } from "~/contexts/execute.ctx";
 import { PREAMBLE } from "~/data/preamble";
@@ -25,13 +24,12 @@ export default component$(() => {
   useContextProvider(ExecuteCtx, state);
 
   const location = useLocation();
-  useClientEffect$(async ({track}) => {
+  useBrowserVisibleTask$(async () => {
     const slug = location.params?.slug ?? null;
     state.workspace = slug;
     const addMessage = (inMessage: any) => {
       const msg = state.messages;
       state.messages = msg.concat([inMessage]);
-      console.log(state.messages);
     };
     initBroadcastChannel(addMessage);
     await initEsbuild();

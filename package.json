@@ -24,8 +24,8 @@
   "devDependencies": {
     "@babel/parser": "^7.14.6",
     "@babel/traverse": "^7.14.5",
-    "@builder.io/qwik": "0.17.4",
-    "@builder.io/qwik-city": "0.0.128",
+    "@builder.io/qwik": "^0.18.1",
+    "@builder.io/qwik-city": "^0.2.1",
     "@builder.io/qwik-react": "0.2.1",
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
@@ -65,7 +65,7 @@
     "typescript": "4.9.5",
     "undici": "5.16.0",
     "util": "^0.12.5",
-    "vite": "4.0.4",
+    "vite": "^4.1.2",
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
@@ -79,6 +79,7 @@
     "idb-managed": "^1.1.4",
     "javascript-playgrounds": "^1.2.3",
     "localforage": "^1.10.0",
-    "mongoose": "^6.9.0"
+    "mongoose": "^6.9.0",
+    "pusher": "^5.1.2"
   }
 }

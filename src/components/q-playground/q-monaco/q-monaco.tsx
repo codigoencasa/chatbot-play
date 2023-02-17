@@ -3,7 +3,7 @@ import {
   $,
   component$,
   noSerialize,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useContext,
   useSignal,
   useStore,
@@ -33,7 +33,7 @@ export const QMonaco = component$(() => {
     loadingMessage: "🚀 Cargando...",
   });
 
-  useClientEffect$(() => {
+  useBrowserVisibleTask$(() => {
     loading.value = true;
   });
 

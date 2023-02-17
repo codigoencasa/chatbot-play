@@ -1,4 +1,4 @@
-import { component$, useClientEffect$ } from "@builder.io/qwik";
+import { component$, useBrowserVisibleTask$ } from "@builder.io/qwik";
 import { DocumentHead, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { UUIDGeneratorBrowser } from "~/utils/uuid-browser";
 
@@ -6,9 +6,9 @@ export default component$(() => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  useClientEffect$(() => {
+  useBrowserVisibleTask$(() => {
     const slug = UUIDGeneratorBrowser();
-    if (!location.params?.slug) navigate.path = `/${slug}`;
+    if (!location.params?.slug) navigate(`/${slug}`)
     return () => null;
   });
 

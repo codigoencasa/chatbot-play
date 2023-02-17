@@ -9,7 +9,6 @@ export const initBroadcastChannel = (addMessage: any) => {
     window.bc = (cb: Function) => {
       const data = cb();
       addMessage(data);
-      console.log("---Executin....", data);
     };
   }
 };

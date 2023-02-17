@@ -1,4 +1,4 @@
-import { $, component$, useClientEffect$, useContext } from "@builder.io/qwik";
+import { $, component$, useBrowserVisibleTask$, useContext } from "@builder.io/qwik";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { executeCode, getCompileCode } from "~/utils/execute-code";
 import Device from "../device/device";
@@ -34,11 +34,12 @@ export const QPlayground = component$(() => {
       
           var channel = pusher.subscribe('my-channel');
           channel.bind('my-event', async (data) => {
-
-            await window.delaySendMessage(0, 'message', {
-                from: '000',
-                body: data.message,
-            })
+            if(data.from === '${state.workspace}'){
+              await window.delaySendMessage(0, 'message', {
+                  from: '${state.workspace}',
+                  body: data.message,
+              })
+            }
         
 
             console.log('RUNKIT:',JSON.stringify(data));
@@ -58,7 +59,7 @@ export const QPlayground = component$(() => {
     if(window.idRuntime) clearInterval(window.idRuntime)
   })
 
-  useClientEffect$(({ track }) => {
+  useBrowserVisibleTask$(({ track }) => {
     track(() => state.ready);
     handlePlay();
 
@@ -72,7 +73,7 @@ export const QPlayground = component$(() => {
 
   return (
     <div class={"flex "}>
-      <div class={"w-full border-r  border-gray-100 "}>
+      <div class={"w-full border-r border-gray-100 "}>
         <QMonaco />
       </div>
       <div class={"w-1/2"}>
