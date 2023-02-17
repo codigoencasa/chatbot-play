@@ -25,6 +25,7 @@ export default defineConfig(({ mode}) => {
     )
   }
 
+  console.log(processEnvValues)
   return {
     define: processEnvValues,
     plugins: [qwikCity(), qwikVite(), tsconfigPaths(), qwikReact(),
