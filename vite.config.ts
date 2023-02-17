@@ -9,14 +9,16 @@ export default defineConfig(({ mode}) => {
   const env = loadEnv(mode, process.cwd())
 
   const processEnvValues = {
-    'process.env': Object.entries(env).reduce(
+    '.env': Object.entries(env).reduce(
       (prev, [key, val]) => {
+        console.log([key, val])
         return {
           ...prev,
           [key]: val,
         }
       },
       {
+        VITE_URL:process.env.VITE_URL,
         VITE_PUSHER_ID:process.env.VITE_PUSHER_ID,
         VITE_PUSHER_PK:process.env.VITE_PUSHER_PK,
         VITE_PUSHER_SK:process.env.VITE_PUSHER_SK,
