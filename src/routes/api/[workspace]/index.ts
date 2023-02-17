@@ -1,9 +1,9 @@
 import { RequestHandler } from "@builder.io/qwik-city";
 import Pusher from "pusher";
-import { PUSHER_CLUSTER, PUSHER_ID, PUSHER_PK, PUSHER_SK } from "~/constants";
+import { DEMO_ENV, PUSHER_CLUSTER, PUSHER_ID, PUSHER_PK, PUSHER_SK } from "~/constants";
 
 export const onPost: RequestHandler = async ({ json, params, request }) => {
-
+  console.log(DEMO_ENV)
   const pusher = new Pusher({
     appId: PUSHER_ID,
     key: PUSHER_PK,

@@ -40,7 +40,9 @@ export const DeviceHeader = component$(() => {
         <span class={" font-semibold"}>Bot</span>
       </div>
       <div>
-        <button onClick$={() => (state.messages = [])}>Limpiar</button>
+        <button onClick$={() => {
+          state.messages = []
+          }}>Limpiar</button>
       </div>
     </div>
   );
