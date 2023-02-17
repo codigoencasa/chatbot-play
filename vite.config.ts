@@ -17,23 +17,15 @@ export default defineConfig(() => {
           plugins: [
               GlobalPolyFill({
                   process: true,
-                  buffer: true,
+                  buffer: true
               }),
           ],
       },
   },
-  resolve: {
-      alias: {
-          process: "process/browser",
-          stream: "stream-browserify",
-          zlib: "browserify-zlib",
-          util: "util",
-      },
-  },
     preview: {
-      headers: {
-        "Cache-Control": "public, max-age=600",
-      },
+      // headers: {
+      //   "Cache-Control": "public, max-age=600",
+      // },
     }
   };
 });

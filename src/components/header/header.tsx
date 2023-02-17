@@ -1,12 +1,12 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { Logo } from '../icons/logo';
-import styles from './header.css?inline';
+import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import { Logo } from "../icons/logo";
+import styles from "./header.css?inline";
 
 export default component$(() => {
   useStylesScoped$(styles);
 
   return (
-    <header class={' border-b flex border-gray-100 '}>
+    <header class={" border-b flex border-gray-100 "}>
       <div class="logo ">
         <a href="https://qwik.builder.io/" target="_blank" title="qwik">
           <Logo />
@@ -14,18 +14,26 @@ export default component$(() => {
       </div>
       <ul>
         <li>
-          <a href="https://qwik.builder.io/docs/components/overview/" target="_blank">
+          <a
+            href="https://qwik.builder.io/docs/components/overview/"
+            target="_blank"
+          >
             Docs
-
           </a>
         </li>
         <li>
-          <a href="https://qwik.builder.io/examples/introduction/hello-world/" target="_blank">
+          <a
+            href="https://qwik.builder.io/examples/introduction/hello-world/"
+            target="_blank"
+          >
             Examples
           </a>
         </li>
         <li>
-          <a href="https://qwik.builder.io/tutorial/welcome/overview/" target="_blank">
+          <a
+            href="https://qwik.builder.io/tutorial/welcome/overview/"
+            target="_blank"
+          >
             Tutorials
           </a>
         </li>

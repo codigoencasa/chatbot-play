@@ -1,5 +1,3 @@
-const QPortal = () => {
+const QPortal = () => {};
 
-}
-
-module.exports = QPortal
+module.exports = QPortal;

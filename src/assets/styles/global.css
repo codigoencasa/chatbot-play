@@ -5,20 +5,17 @@
  * the styles in here will be applied to the Document, without any sort of CSS scoping.
  *
  */
-@import 'prism.css';
+@import "prism.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
-
-    html {
-        font-family: 'Inter var', sans-serif; 
-    }
-
+  html {
+    font-family: "Inter var", sans-serif;
+  }
 }
 
-
-.decorationsOverviewRuler{
-    width: 0 !important;
+.decorationsOverviewRuler {
+  width: 0 !important;
 }
