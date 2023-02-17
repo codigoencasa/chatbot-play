@@ -26,24 +26,21 @@ export const QPlayground = component$(() => {
           ${mergeCode}
           console.log(1)
 
-          // Enable pusher logging - don't include this in production
-
-          var pusher = new Pusher('adb4202d50dff49b170a', {
-            cluster: 'eu'
-          });
-      
-          var channel = pusher.subscribe('my-channel');
-          channel.bind('my-event', async (data) => {
-            if(data.from === '${state.workspace}'){
-              await window.delaySendMessage(0, 'message', {
-                  from: '${state.workspace}',
-                  body: data.message,
-              })
-            }
-        
-
-            console.log('RUNKIT:',JSON.stringify(data));
-          });
+          if(!window.pusherJoined){
+            window.pusherJoined = true
+            window.pusherChannel.bind('my-event', async (data) => {
+              window.pusherJoined = true
+              if(data.from === '${state.workspace}'){
+                await window.delaySendMessage(0, 'message', {
+                    from: '${state.workspace}',
+                    body: data.message,
+                })
+              }
+          
+  
+              console.log('RUNKIT:',JSON.stringify(data));
+            });
+          }
 
           window.idRuntime = setInterval(() => null, 20)
       }
@@ -52,6 +49,7 @@ export const QPlayground = component$(() => {
     const resultExection = await getCompileCode(fullCode, "index.js")();
     state.result = resultExection?.outputFiles[0].text;
     if (state.result) await executeCode(state.result);
+
     state.running = false;
   });
 
