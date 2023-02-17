@@ -2,14 +2,12 @@ import * as esbuild from "esbuild-wasm";
 import axios from "axios";
 import localForage from "localforage";
 
-
-
 export const fileCache = localForage.createInstance({
   name: "fileCache",
 });
 
 export const unpkgFetchPlugin = (
-  inputCode: string | undefined,
+  inputCode: string | undefined
 ): esbuild.Plugin => {
   return {
     name: "unpkg-fetch-plugin",
