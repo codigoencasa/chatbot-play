@@ -1,16 +1,21 @@
 FROM node:18-bullseye as bot
 WORKDIR /app
-COPY package*.json ./
-RUN npm i
+COPY package.json pnpm-lock.yaml ./
+RUN npm install --global pnpm && \
+    pnpm install --frozen-lockfile
 COPY . .
-RUN npm run build
-ARG RAILWAY_STATIC_URL
-ARG PUBLIC_URL
-ARG PORT
+ARG VITE_URL
 ARG VITE_PUSHER_ID
 ARG VITE_PUSHER_PK
 ARG VITE_PUSHER_SK
 ARG VITE_PUSHER_CLUSTER
-ARG VITE_URL
 
-CMD ["npm", "run", "deploy"]
+ENV VITE_URL=$VITE_URL
+ENV VITE_PUSHER_ID=$VITE_PUSHER_ID
+ENV VITE_PUSHER_PK=$VITE_PUSHER_PK
+ENV VITE_PUSHER_SK=$VITE_PUSHER_SK
+ENV VITE_PUSHER_CLUSTER=$VITE_PUSHER_CLUSTER
+
+RUN pnpm run build
+EXPOSE 3000
+CMD ["pnpm", "run", "deploy"]
