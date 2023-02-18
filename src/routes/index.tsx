@@ -1,5 +1,5 @@
 import { component$, useBrowserVisibleTask$, useContext } from "@builder.io/qwik";
-import { DocumentHead,  useNavigate } from "@builder.io/qwik-city";
+import { DocumentHead,  useNavigate, Link } from "@builder.io/qwik-city";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { UUIDGeneratorBrowser } from "~/utils/uuid-browser";
 
@@ -15,7 +15,7 @@ export default component$(() => {
   });
 
   return (<div>
-    <button onClick$={() => navigate(`workspace/${state.workspace}`) }>Ir a mi workspace</button>
+    <Link href={`workspace/${state.workspace}`}>Ir a mi workspace</Link>
   </div>);
 });
 
