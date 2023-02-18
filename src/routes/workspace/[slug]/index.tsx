@@ -1,27 +1,19 @@
 import {
   component$,
   useBrowserVisibleTask$,
-  useContextProvider,
-  useStore,
+  useContext,
+
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { QPlayground } from "~/components/q-playground/q-playground";
-import { ExecuteCtx, IExecute } from "~/contexts/execute.ctx";
-import { PREAMBLE } from "~/data/preamble";
-import { SAMPLE } from "~/data/sample";
+import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { initBroadcastChannel } from "~/utils/brodcast";
 import { initEsbuild } from "~/utils/execute-code";
 
 export default component$(() => {
-  const state = useStore<IExecute>({
-    code: SAMPLE,
-    loading: false,
-    preamble: PREAMBLE,
-    messages: [],
-  });
 
-  useContextProvider(ExecuteCtx, state);
+  const state = useContext(ExecuteCtx)
 
   const location = useLocation();
   useBrowserVisibleTask$(async () => {

@@ -1,18 +1,22 @@
-import { component$, useBrowserVisibleTask$ } from "@builder.io/qwik";
-import { DocumentHead, useLocation, useNavigate } from "@builder.io/qwik-city";
+import { component$, useBrowserVisibleTask$, useContext } from "@builder.io/qwik";
+import { DocumentHead,  useNavigate } from "@builder.io/qwik-city";
+import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { UUIDGeneratorBrowser } from "~/utils/uuid-browser";
 
 export default component$(() => {
-  const location = useLocation();
   const navigate = useNavigate();
+  const state = useContext(ExecuteCtx)
 
   useBrowserVisibleTask$(async () => {
     const slug = UUIDGeneratorBrowser();
-    console.log('__________',location.params?.slug?.length)
-    if (!location.params?.slug?.length) await navigate(`/workspace/${slug}`);
+    state.workspace = slug
+    // console.log('__________',location.params?.slug?.length)
+    // if (!location.params?.slug?.length) await navigate(`/workspace/${slug}`);
   });
 
-  return <>Redirecting...</>;
+  return (<div>
+    <button onClick$={() =>navigate(`/workspace/${state.workspace}`) }>Ir a mi workspace</button>
+  </div>);
 });
 
 export const head: DocumentHead = () => {
