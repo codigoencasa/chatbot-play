@@ -33,7 +33,7 @@ export default component$(() => {
     };
     initBroadcastChannel(addMessage);
     await initEsbuild();
-    state.ready = true
+    state.ready = true;
   });
 
   return <QPlayground />;

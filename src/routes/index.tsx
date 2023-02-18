@@ -8,11 +8,11 @@ export default component$(() => {
 
   useBrowserVisibleTask$(() => {
     const slug = UUIDGeneratorBrowser();
-    if (!location.params?.slug) navigate(`/workspace/${slug}`)
-    return () => null;
+    console.log(location.params);
+    if (!location.params?.slug) navigate(`/workspace/${slug}`);
   });
 
-  return <>Redirect...</>;
+  return <>Redirecting...</>;
 });
 
 export const head: DocumentHead = () => {

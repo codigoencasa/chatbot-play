@@ -19,8 +19,7 @@ export const NPM_BROWSER: { [key: string]: string } = {
 };
 
 export const mapMockModule = (args: any) => {
-
-  console.log(NPM_BROWSER)
+  console.log(NPM_BROWSER);
 
   const moduleUrl = NPM_BROWSER[args?.path] ?? `https://unpkg.com/${args.path}`;
   return {

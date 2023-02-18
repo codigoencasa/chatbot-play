@@ -1,10 +1,4 @@
-import {
-  $,
-  component$,
-  useBrowserVisibleTask$,
-  useContext,
-  useSignal,
-} from "@builder.io/qwik";
+import { $, component$, useContext, useSignal } from "@builder.io/qwik";
 import type { QRL } from "@builder.io/qwik";
 // @ts-ignore
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
@@ -40,9 +34,13 @@ export const DeviceHeader = component$(() => {
         <span class={" font-semibold"}>Bot</span>
       </div>
       <div>
-        <button onClick$={() => {
-          state.messages = []
-          }}>Limpiar</button>
+        <button
+          onClick$={() => {
+            state.messages = [];
+          }}
+        >
+          Limpiar
+        </button>
       </div>
     </div>
   );
@@ -108,40 +106,25 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
 export default component$(() => {
   const state = useContext(ExecuteCtx);
 
-  useBrowserVisibleTask$(() => {
-    // /**
-    //  * TODO: Refactorizar llevar a otro lado
-    //  */
-    // const pusher = new Pusher("adb4202d50dff49b170a", {
-    //   cluster: "eu",
-    // });
-
-    // const channel = pusher.subscribe("my-channel");
-    // channel.bind("provider-to-device", function (data: any) {
-    //   console.log("DEVICE:", data);
-    // });
-  });
-
-   const fakeAuthService = $(async (message:string) => {
-    await fetch(`${VITE_URL}/api/${state.workspace}`,{
-      method: 'POST',
+  const fakeAuthService = $(async (message: string) => {
+    await fetch(`${VITE_URL}/api/${state.workspace}`, {
+      method: "POST",
       headers: {
-        "Content-Type":"application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "message": message
+        message: message,
       }),
-      redirect: 'follow'
-    })
-
-  })
+      redirect: "follow",
+    });
+  });
 
   const sendMessage$ = $(async (inMessage: any) => {
     state.messages = state.messages.concat({
       message: inMessage,
       direction: "in",
     });
-    await fakeAuthService(inMessage)
+    await fakeAuthService(inMessage);
   });
 
   return (

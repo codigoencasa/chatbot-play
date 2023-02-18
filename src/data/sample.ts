@@ -45,7 +45,7 @@ const flujoPrincipal = addKeyword('hola')
 .addAnswer('¿Como vas a pagar *paypal* o *cash*?', {capture:true}, async (ctx,{flowDynamic}) => {
 
 
-},[flowCash, flowOnline])//⚡⚡⚡ CUANDO TENEMOS FLUJOS HIJOS NO CONTINUAR AGREGANDO MÁS .addAnswer
+},[flowCash, flowOnline])
 
 
 const main = async () => {

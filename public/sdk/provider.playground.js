@@ -18,8 +18,8 @@ class MockProvider extends ProviderClass {
   };
 
   sendMessage = async (from, message) => {
-    window.bc(() => ({ from, message, direction: 'out' }));
-    return Promise.resolve({  from, message, direction: 'out' });
+    window.bc(() => ({ from, message, direction: "out" }));
+    return Promise.resolve({ from, message, direction: "out" });
   };
 }
 
