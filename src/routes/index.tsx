@@ -8,7 +8,8 @@ export default component$(() => {
 
   useBrowserVisibleTask$(async () => {
     const slug = UUIDGeneratorBrowser();
-    if (!location.params?.slug) await navigate(`/workspace/${slug}`);
+    console.log('__________',location.params?.slug?.length)
+    if (!location.params?.slug?.length) await navigate(`/workspace/${slug}`);
   });
 
   return <>Redirecting...</>;

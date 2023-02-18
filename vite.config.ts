@@ -11,7 +11,6 @@ export default defineConfig(({ mode}) => {
   const processEnvValues = {
     '.env': Object.entries(env).reduce(
       (prev, [key, val]) => {
-        console.log([key, val])
         return {
           ...prev,
           [key]: val,
@@ -27,11 +26,13 @@ export default defineConfig(({ mode}) => {
     )
   }
 
-  console.log(processEnvValues)
   return {
     define: processEnvValues,
     plugins: [qwikCity(), qwikVite(), tsconfigPaths(), qwikReact(),
     ],
+    ssr: {
+      noExternal: []
+    },
     optimizeDeps: {
       esbuildOptions: {
           define: {
@@ -44,11 +45,6 @@ export default defineConfig(({ mode}) => {
               }),
           ],
       },
-  },
-    preview: {
-      // headers: {
-      //   "Cache-Control": "public, max-age=600",
-      // },
-    }
+  }
   };
 });
