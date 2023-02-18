@@ -1,12 +1,17 @@
-import { $, component$, useBrowserVisibleTask$, useContext } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useBrowserVisibleTask$,
+  useContext,
+} from "@builder.io/qwik";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { executeCode, getCompileCode } from "~/utils/execute-code";
 import Device from "../device/device";
 import { QMonaco } from "./q-monaco/q-monaco";
 
-declare global{
-  interface Window{
-    idRuntime:any
+declare global {
+  interface Window {
+    idRuntime: any;
   }
 }
 
@@ -54,19 +59,19 @@ export const QPlayground = component$(() => {
   });
 
   const cleanWorker = $(() => {
-    if(window.idRuntime) clearInterval(window.idRuntime)
-  })
+    if (window.idRuntime) clearInterval(window.idRuntime);
+  });
 
   useBrowserVisibleTask$(({ track }) => {
     track(() => state.ready);
     handlePlay();
 
-    track(() => state.code)
-    cleanWorker()
+    track(() => state.code);
+    cleanWorker();
 
     return () => {
-      cleanWorker()
-    }
+      cleanWorker();
+    };
   });
 
   return (

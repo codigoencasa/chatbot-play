@@ -37,21 +37,6 @@ export const QMonaco = component$(() => {
     loading.value = true;
   });
 
-  // const formatOnSave = $(() => {
-  //   console.log(codeEditor.value.current)
-  //   const unformattedCode = codeEditor.value.current.getModel().getValue();
-  //   const config = { parser: "babel", plugin: [parserBabel] };
-
-  //   const formattedCode = prettier.format(unformattedCode, {
-  //     parser: config && config.parser,
-  //     plugins: config && config.plugin,
-  //     useTabs: false,
-  //     semi: true,
-  //   });
-
-  //   codeEditor.value.current.setValue(formattedCode);
-  // });
-
   const handleMount: any = $(async (monacoEditor: any, monaco: any) => {
     codeEditor.value = noSerialize(monacoEditor);
 

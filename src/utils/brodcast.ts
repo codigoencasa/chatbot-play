@@ -15,7 +15,7 @@ export const initBroadcastChannel = (addMessage: any) => {
 
   if (window && !window.pusher) {
     window.pusher = pusher;
-    window.pusherChannel = window.pusher.subscribe('my-channel');
+    window.pusherChannel = window.pusher.subscribe("my-channel");
   }
 
   if (window && !window.bc) {

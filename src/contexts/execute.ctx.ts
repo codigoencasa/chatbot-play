@@ -7,7 +7,7 @@ export interface IExecute {
   after?: string;
   running?: boolean;
   workspace?: string;
-  ready?:boolean;
+  ready?: boolean;
   messages: { message: string; direction: "in" | "out" }[];
 }
 export const ExecuteCtx = createContext<IExecute>("execute-ctx");
