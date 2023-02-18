@@ -8,7 +8,7 @@ export default component$(() => {
 
   useBrowserVisibleTask$(() => {
     const slug = UUIDGeneratorBrowser();
-    if (!location.params?.slug) navigate(`/${slug}`)
+    if (!location.params?.slug) navigate(`/workspace/${slug}`)
     return () => null;
   });
 
