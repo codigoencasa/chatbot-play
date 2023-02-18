@@ -3,7 +3,8 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { qwikReact } from "@builder.io/qwik-react/vite";
-import GlobalPolyFill from "@esbuild-plugins/node-globals-polyfill";
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 
 export default defineConfig(({ mode}) => {
   const env = loadEnv(mode, process.cwd())
@@ -39,12 +40,13 @@ export default defineConfig(({ mode}) => {
               global: "globalThis",
           },
           plugins: [
-              GlobalPolyFill({
+            NodeGlobalsPolyfillPlugin({
                   process: true,
                   buffer: true
               }),
+            NodeModulesPolyfillPlugin() 
           ],
       },
-  }
+  },
   };
 });

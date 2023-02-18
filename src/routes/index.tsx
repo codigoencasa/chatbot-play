@@ -15,7 +15,7 @@ export default component$(() => {
   });
 
   return (<div>
-    <button onClick$={() =>navigate(`/workspace/${state.workspace}`) }>Ir a mi workspace</button>
+    <button onClick$={() => navigate(`workspace/${state.workspace}`) }>Ir a mi workspace</button>
   </div>);
 });
 
