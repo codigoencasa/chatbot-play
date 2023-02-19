@@ -9,7 +9,7 @@ declare global {
   const Pusher: any;
 }
 
-export const DeviceHeader = component$(() => {
+export const DeviceHeader = component$((props:{save:QRL<any>}) => {
   const state = useContext(ExecuteCtx);
   return (
     <div
@@ -33,12 +33,15 @@ export const DeviceHeader = component$(() => {
       <div class={" w-full flex content-center items-center px-2"}>
         <span class={" font-semibold"}>Bot</span>
       </div>
-      <div>
+      <div class={'flex gap-5'}>
+        <button
+          onClick$={props.save}>
+          Guardar
+        </button>
         <button
           onClick$={() => {
             state.messages = [];
-          }}
-        >
+          }}>
           Limpiar
         </button>
       </div>
@@ -106,7 +109,7 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
 export default component$(() => {
   const state = useContext(ExecuteCtx);
 
-  const fakeAuthService = $(async (message: string) => {
+  const sendEvent = $(async (message: string) => {
     await fetch(`${VITE_URL}/api/${state.workspace}`, {
       method: "POST",
       headers: {
@@ -118,18 +121,33 @@ export default component$(() => {
       redirect: "follow",
     });
   });
+  const saveCode = $(async (code: string) => {
+    await fetch(`${VITE_URL}/api/${state.workspace}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code,
+      }),
+    });
+  });
 
   const sendMessage$ = $(async (inMessage: any) => {
     state.messages = state.messages.concat({
       message: inMessage,
       direction: "in",
     });
-    await fakeAuthService(inMessage);
+    await sendEvent(inMessage);
+  });
+
+  const saveCode$ = $(async () => {
+    await saveCode(state.code);
   });
 
   return (
     <div class={"bg-white flex flex-col justify-between  h-full  w-full"}>
-      <DeviceHeader />
+      <DeviceHeader save={saveCode$} />
       <BodyFooter messages={state.messages} />
       <DeviceFooter sendMessage={sendMessage$} />
     </div>
