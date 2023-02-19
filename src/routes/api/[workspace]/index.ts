@@ -26,3 +26,12 @@ export const onPost: RequestHandler = async ({ json, params, request }) => {
 
   json(200, body);
 };
+
+export const onPut: RequestHandler = async ({ json, params, request }) => {
+  const data = await request.json();
+  const body = {
+    from: params.workspace,
+  };
+
+  json(200, body);
+};
