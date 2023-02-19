@@ -1,29 +1,26 @@
-const { ProviderClass } = require('@bot-whatsapp/bot')
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const { ProviderClass } = require("@bot-whatsapp/bot");
+
 class MockProvider extends ProviderClass {
-    constructor() {
-        super()
-        if (typeof window !== 'undefined') this.init()
-    }
+  constructor() {
+    super();
+    if (typeof window !== "undefined") this.init();
+  }
 
-    init = () => {
-        window.WSBOT.delaySendMessage = (miliseconds, eventName, payload) => {
-            return new Promise((res) =>
-                setTimeout(() => {
-                    this.emit(eventName, payload)
-                    res
-                }, miliseconds)
-            )
-        }
+  init = () => {
+    window.delaySendMessage = (miliseconds, eventName, payload) => {
+      return new Promise((res) =>
+        setTimeout(() => {
+          this.emit(eventName, payload);
+          res;
+        }, miliseconds)
+      );
+    };
+  };
 
-    }
-
-    sendMessage = async (userId, message) => {
-        await delay(1500)
-        window.WSBOT.bridgeEvents.postMessage({ userId, message });
-        return Promise.resolve({ userId, message })
-    }
-
+  sendMessage = async (from, message) => {
+    window.bc(() => ({ from, message, direction: "out" }));
+    return Promise.resolve({ from, message, direction: "out" });
+  };
 }
 
-module.exports = MockProvider
+module.exports = MockProvider;

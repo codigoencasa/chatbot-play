@@ -3,16 +3,16 @@ import {
   $,
   component$,
   noSerialize,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useContext,
   useSignal,
   useStore,
 } from "@builder.io/qwik";
 
-import prettier from "prettier";
-import parserHtml from "prettier/parser-html";
-import parserCss from "prettier/parser-postcss";
-import parserBabel from "prettier/parser-babel";
+// import prettier from "prettier";
+// import parserHtml from "prettier/parser-html";
+// import parserCss from "prettier/parser-postcss";
+// import parserBabel from "prettier/parser-babel";
 import MonacoEditor from "@monaco-editor/react";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 
@@ -22,7 +22,7 @@ export const QMonaco = component$(() => {
   const state = useContext(ExecuteCtx);
   const codeEditor = useSignal<any>();
   const loading = useSignal(false);
-  const stateMonaco = useStore({
+  const stateMonaco: any = useStore({
     monacoLanguage: "javascript",
     options: {
       selectOnLineNumbers: true,
@@ -33,17 +33,12 @@ export const QMonaco = component$(() => {
     loadingMessage: "🚀 Cargando...",
   });
 
-  useClientEffect$(() => {
+  useBrowserVisibleTask$(() => {
     loading.value = true;
   });
 
   const handleMount: any = $(async (monacoEditor: any, monaco: any) => {
     codeEditor.value = noSerialize(monacoEditor);
-
-    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-      "javascript.suggestionActions.enabled": false
-    });
-    
 
     const { default: traverse } = await import("@babel/traverse");
     const { parse } = await import("@babel/parser");
@@ -70,62 +65,11 @@ export const QMonaco = component$(() => {
       undefined,
       () => {}
     );
-
-    //format code
-    function formatOnSave() {
-      const unformattedCode = codeEditor.value.current.getModel().getValue();
-      const lang =
-        codeEditor.value.current.getModel()._languageIdentifier.language;
-
-      let config;
-
-      switch (lang) {
-        case "html":
-          config = { parser: "html", plugin: [parserHtml] };
-          break;
-
-        case "css":
-          config = { parser: "css", plugin: [parserCss] };
-          break;
-
-        case "javascript":
-          config = { parser: "babel", plugin: [parserBabel] };
-          break;
-
-        default:
-          break;
-      }
-
-      const formattedCode = prettier.format(unformattedCode, {
-        parser: config && config.parser,
-        plugins: config && config.plugin,
-        useTabs: false,
-        semi: true,
-      });
-
-      codeEditor.value.current.setValue(formattedCode);
-    }
-
-    //save command
-
-    const handleOnKeyDown = codeEditor.value.onKeyDown((event: KeyboardEvent) => {
-      if (
-        (window.navigator.platform.match("Mac")
-          ? event.metaKey
-          : event.ctrlKey) &&
-        event.code === "KeyS"
-      ) {
-        event.preventDefault();
-        formatOnSave();
-      }
-    });
-
-    //cleaning up
-    return () => handleOnKeyDown.dispose();
   });
 
   const handleChange = $((monacoValue: string | undefined) => {
     if (monacoValue) state.code = monacoValue;
+    // await formatOnSave();
   });
 
   return (
@@ -142,7 +86,13 @@ export const QMonaco = component$(() => {
           value={state.code}
         />
       ) : (
-        <div class={'flex items-center justify-center content-center h-full w-full'}>{stateMonaco.loadingMessage}</div>
+        <div
+          class={
+            "flex items-center justify-center content-center h-full w-full"
+          }
+        >
+          {stateMonaco.loadingMessage}
+        </div>
       )}
     </div>
   );

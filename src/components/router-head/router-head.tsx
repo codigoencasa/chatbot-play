@@ -17,6 +17,7 @@ export const RouterHead = component$(() => {
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <link rel="preconnect" href="https://rsms.me/" />
       <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+      <script src="https://js.pusher.com/7.2/pusher.min.js" />
 
       {head.meta.map((m) => (
         <meta {...m} />

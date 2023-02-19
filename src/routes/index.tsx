@@ -1,18 +1,26 @@
-import { component$, useClientEffect$ } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { component$, useBrowserVisibleTask$, useContext } from "@builder.io/qwik";
+import { DocumentHead,  useLocation } from "@builder.io/qwik-city";
+import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { UUIDGeneratorBrowser } from "~/utils/uuid-browser";
 
 export default component$(() => {
+  const state = useContext(ExecuteCtx)
+  const location = useLocation()
 
-    const location = useLocation()
-    const navigate = useNavigate()
+  useBrowserVisibleTask$(async () => {
+    const slug = UUIDGeneratorBrowser();
+    state.workspace = slug
+    // if (!location.params?.slug?.length) await navigate(`/workspace/${slug}`);
+    if (!location.params?.slug?.length)  window.location.replace(`/workspace/${slug}`);
+  });
 
-    useClientEffect$(() => {
-        const slug = UUIDGeneratorBrowser()
-        if(!location.params?.slug) navigate.path = `/${slug}`
-        return () => null
-    })
+  return (<div>
+  Redirectin...
+  </div>);
+});
 
-    return(<>Redirect...</>)
-  
-})
+export const head: DocumentHead = () => {
+  return {
+    title: `Chatbot (Playground)`,
+  };
+};

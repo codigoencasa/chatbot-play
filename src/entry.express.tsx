@@ -13,10 +13,7 @@ import render from './entry.ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
-import compression from 'compression';
-import { Server } from 'http'
-import {Server as ServerIO } from 'socket.io'
-import { handleIOConnection } from './socket/event';
+// import compression from 'compression';
 
 // Directories where the static assets are located
 const distDir = join(fileURLToPath(import.meta.url), '..', '..', 'dist');
@@ -32,18 +29,8 @@ const { router, notFound } = createQwikCity({ render, qwikCityPlan });
 // https://expressjs.com/
 const app = express();
 
-const server = new Server(app);
-const io = new ServerIO(server,
-  {
-    cors: {
-      origin: "*"
-    }
-  });
-io.on("connection", handleIOConnection());
-
-
 // Enable gzip compression
-app.use(compression());
+// app.use(compression());
 
 // Static asset handlers
 // https://expressjs.com/en/starter/static-files.html
@@ -57,7 +44,7 @@ app.use(router);
 app.use(notFound);
 
 // Start the express server
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   /* eslint-disable */
   console.log(`Server starter: http://localhost:${PORT}/`);
 });
