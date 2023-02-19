@@ -31,6 +31,7 @@ export const onPut: RequestHandler = async ({ json, params, request }) => {
   const data = await request.json();
   const body = {
     from: params.workspace,
+    data
   };
 
   json(200, body);
