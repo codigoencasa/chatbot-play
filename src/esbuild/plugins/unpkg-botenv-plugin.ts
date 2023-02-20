@@ -19,8 +19,6 @@ export const NPM_BROWSER: { [key: string]: string } = {
 };
 
 export const mapMockModule = (args: any) => {
-  console.log(NPM_BROWSER);
-
   const moduleUrl = NPM_BROWSER[args?.path] ?? `https://unpkg.com/${args.path}`;
   return {
     namespace: "a",
@@ -32,14 +30,13 @@ export const unpkgBotenvPlugin = (): esbuild.Plugin => {
   return {
     name: "unpkg-path-plugin",
     setup(build: esbuild.PluginBuild) {
-      //
+      
       build.onResolve({ filter: /.*/ }, (args) => {
         if (args.kind === "entry-point") {
           return { path: args.path, namespace: "a" };
         }
       });
 
-      //match relative path in a module "./" or "../"
       build.onResolve({ filter: /^\.+\// }, (args: esbuild.OnResolveArgs) => {
         return {
           namespace: "a",
@@ -47,7 +44,6 @@ export const unpkgBotenvPlugin = (): esbuild.Plugin => {
         };
       });
 
-      //match main file in a module
       build.onResolve({ filter: /.*/ }, async (args: esbuild.OnResolveArgs) => {
         return mapMockModule(args);
       });
