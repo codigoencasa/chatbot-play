@@ -19,7 +19,7 @@ export default component$(() => {
       window.location.replace(`/workspace/${slug}`);
   });
 
-  return <div>Redireccionando...</div>;
+  return <div class={'fixed top-0 left-0 w-full h-full justify-center flex items-center content-center dark:text-white'}>Redireccionando...</div>;
 });
 
 export const head: DocumentHead = () => {

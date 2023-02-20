@@ -5,9 +5,9 @@ const WorkspaceScheme = new Schema<any>(
     slug: {
       type: String,
     },
-    code:{
-        type:String
-    }
+    code: {
+      type: String,
+    },
   },
   {
     versionKey: false,

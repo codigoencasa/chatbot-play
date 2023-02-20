@@ -89,7 +89,9 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
       <input
         value={store.value}
         onInput$={(ev: any) => (store.value = ev?.target?.value)}
-        class={"outline-none w-full h-full rounded-b-lg px-2 bg-white dark:text-white dark:bg-gray-800"}
+        class={
+          "outline-none w-full h-full rounded-b-lg px-2 bg-white dark:text-white dark:bg-gray-800"
+        }
         placeholder="Mensaje..."
       />
       <button class={"btn-primary"}>Enviar</button>

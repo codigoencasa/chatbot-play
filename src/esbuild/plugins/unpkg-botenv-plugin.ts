@@ -30,7 +30,6 @@ export const unpkgBotenvPlugin = (): esbuild.Plugin => {
   return {
     name: "unpkg-path-plugin",
     setup(build: esbuild.PluginBuild) {
-      
       build.onResolve({ filter: /.*/ }, (args) => {
         if (args.kind === "entry-point") {
           return { path: args.path, namespace: "a" };

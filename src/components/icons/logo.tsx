@@ -11,6 +11,6 @@ export const Logo = () => (
       alt="Qwind Logo"
       loading="lazy"
     />
-    Chatbot <span class={'pl-1 font-semibold text-[#25b637]'}>Play</span>
+    Chatbot <span class={"pl-1 font-semibold text-[#25b637]"}>Play</span>
   </span>
 );

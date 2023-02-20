@@ -3,6 +3,7 @@ import {
   component$,
   useBrowserVisibleTask$,
   useContext,
+  useSignal,
 } from "@builder.io/qwik";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { apiSaveWorkspace } from "~/services/api";
@@ -11,6 +12,7 @@ import { Logo } from "../icons/logo";
 
 export default component$(() => {
   const state = useContext(ExecuteCtx);
+  const saving = useSignal(false);
 
   useBrowserVisibleTask$(() => {
     if (
@@ -24,7 +26,9 @@ export default component$(() => {
   });
 
   const saveWorkspace$ = $(async () => {
+    saving.value = true;
     if (state.workspace) await apiSaveWorkspace(state.workspace, state.code);
+    saving.value = false;
   });
 
   const handleTheme$ = $(() => {
@@ -53,7 +57,11 @@ export default component$(() => {
         >
           <Logo />
         </a>
-        <button onClick$={saveWorkspace$} class={"btn-seconday"}>
+        <button
+          disabled={saving.value}
+          onClick$={saveWorkspace$}
+          class={"btn-seconday disabled:opacity-30"}
+        >
           Compartir
         </button>
       </div>

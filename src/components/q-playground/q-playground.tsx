@@ -80,10 +80,10 @@ export const QPlayground = component$(() => {
       </div>
 
       <div class="w-1/2 relative flex flex-col justify-center overflow-hidden bg-gray-50 dark:bg-gray-900 py-6 sm:py-12">
-          <div class="absolute p-6 pt-3  inset-0 bg-[url(https://play.tailwindcss.com/img/grid.svg)] bg-center">
+        <div class="absolute p-6 pt-3  inset-0 bg-[url(https://play.tailwindcss.com/img/grid.svg)] bg-center">
           <Device />
-          </div>
         </div>
+      </div>
     </div>
   );
 });

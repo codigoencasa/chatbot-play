@@ -6,7 +6,7 @@ import { qwikReact } from "@builder.io/qwik-react/vite";
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 
-export default defineConfig(({mode}) => {
+export default defineConfig(({ mode}) => {
   const env = loadEnv(mode, process.cwd())
 
   const processEnvValues = {
@@ -17,6 +17,14 @@ export default defineConfig(({mode}) => {
           [key]: val,
         }
       },
+      {
+        VITE_URL:process.env.VITE_URL,
+        VITE_PUSHER_ID:process.env.VITE_PUSHER_ID,
+        VITE_PUSHER_PK:process.env.VITE_PUSHER_PK,
+        VITE_PUSHER_SK:process.env.VITE_PUSHER_SK,
+        VITE_PUSHER_CLUSTER:process.env.VITE_PUSHER_CLUSTER,
+        VITE_DB_URI:process.env.VITE_DB_URI
+      },
     )
   }
 
@@ -24,14 +32,8 @@ export default defineConfig(({mode}) => {
     define: processEnvValues,
     plugins: [qwikCity(), qwikVite(), tsconfigPaths(), qwikReact(),
     ],
-    resolve:{
-      alias: {
-        crypto: "crypto-browserify",
-        stream: "rollup-plugin-node-polyfills/polyfills/stream",
-        string_decoder: "rollup-plugin-node-polyfills/polyfills/string-decoder",
-        url: "rollup-plugin-node-polyfills/polyfills/url",
-        util: "util"
-      }
+    ssr: {
+      noExternal: []
     },
     optimizeDeps: {
       esbuildOptions: {

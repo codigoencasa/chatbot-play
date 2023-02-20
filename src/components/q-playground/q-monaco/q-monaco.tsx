@@ -18,7 +18,6 @@ import { ExecuteCtx } from "~/contexts/execute.ctx";
 import darkTheme from "~/assets/monaco/themes/dark-theme";
 import lightTheme from "~/assets/monaco/themes/light.theme";
 
-
 export const QMonaco = component$(() => {
   const MonacoEditor$ = qwikify$(MonacoEditor);
   const state = useContext(ExecuteCtx);
@@ -31,6 +30,7 @@ export const QMonaco = component$(() => {
       selectOnLineNumbers: true,
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
+      contextmenu: false,
     },
     loadingMessage: "🚀 Cargando...",
   });
@@ -40,7 +40,6 @@ export const QMonaco = component$(() => {
   });
 
   const handleMount: any = $(async (monacoEditor: any, monaco: any) => {
-
     codeEditor.value = noSerialize(monacoEditor);
 
     const { default: traverse } = await import("@babel/traverse");
@@ -48,7 +47,6 @@ export const QMonaco = component$(() => {
     const { default: MonacoJSXHighlighter } = await import(
       "monaco-jsx-highlighter"
     );
-
 
     //jsx syntax highlight
     const babelParse = (code: any) =>
@@ -71,11 +69,10 @@ export const QMonaco = component$(() => {
     );
   });
 
-
-  const setTheme = $((monaco:any) => {
-    monaco.editor.defineTheme("vs-light", lightTheme)
-    monaco.editor.defineTheme("vs-dark", darkTheme)
-  })
+  const beforeMount = $((monaco: any) => {
+    monaco.editor.defineTheme("vs-light", lightTheme);
+    monaco.editor.defineTheme("vs-dark", darkTheme);
+  });
 
   const handleChange = $((monacoValue: string | undefined) => {
     if (monacoValue) state.code = monacoValue;
@@ -91,20 +88,12 @@ export const QMonaco = component$(() => {
           language={"javascript"}
           options={stateMonaco.options}
           theme={state.theme}
-          beforeMount={setTheme}
+          beforeMount={beforeMount}
           className="h-full"
-          loading={stateMonaco.loadingMessage}
+          loading={''}
           value={state.code}
         />
-      ) : (
-        <div
-          class={
-            "flex items-center justify-center content-center h-full w-full"
-          }
-        >
-          {stateMonaco.loadingMessage}
-        </div>
-      )}
+      ) : null}
     </div>
   );
 });

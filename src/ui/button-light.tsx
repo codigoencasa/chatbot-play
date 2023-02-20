@@ -1,8 +1,9 @@
 import { component$, QRL } from "@builder.io/qwik";
 
-export default component$((props:{onClick$:QRL<any>}) => {
+export default component$((props: { onClick$: QRL<any> }) => {
   return (
-    <button onClick$={props.onClick$}
+    <button
+      onClick$={props.onClick$}
       type="button"
       class="ml-4 sm:ml-0 ring-1 shadow-sm dark:hover:bg-gray-800 hover:bg-gray-50 dark:ring-0 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400"
     >
