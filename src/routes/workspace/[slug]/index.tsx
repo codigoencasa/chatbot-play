@@ -7,6 +7,7 @@ import {
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
+import Loading from "~/components/loading/loading";
 import { QPlayground } from "~/components/q-playground/q-playground";
 import { VITE_URL } from "~/constants";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
@@ -32,6 +33,7 @@ export default component$(() => {
     state.workspace = slug;
 
     const data = await getCode(state.workspace)
+    console.log(data)
     // if(data) state.code = data.code
  
     const addMessage = (inMessage: any) => {
@@ -41,9 +43,15 @@ export default component$(() => {
     initBroadcastChannel(addMessage);
     await initEsbuild();
     state.ready = true;
+    state.loading = false
   });
 
-  return <QPlayground />;
+  return (
+    <div>
+      {(state.loading) ? <Loading /> : null}
+      <QPlayground />
+    </div>
+  );
 });
 
 export const head: DocumentHead = () => {

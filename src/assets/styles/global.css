@@ -21,7 +21,7 @@
   }
 
   .btn-light{
-    @apply  relative duration-100 cursor-pointer flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 hover:bg-gray-200
+    @apply  relative duration-100 cursor-pointer flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 hover:bg-gray-200 dark:hover:bg-gray-700
   }
 
   .btn-seconday{

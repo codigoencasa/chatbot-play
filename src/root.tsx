@@ -7,13 +7,9 @@ import {
 import { RouterHead } from "./components/router-head/router-head";
 
 import globalStyles from "~/assets/styles/global.css?inline";
-import dbConnect from "./config/mongo";
 
 export default component$(() => {
-  dbConnect();
-
   useStyles$(globalStyles);
-
   return (
     <QwikCityProvider>
       <head>

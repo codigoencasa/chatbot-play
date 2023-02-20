@@ -1,4 +1,9 @@
-import { $, component$, useContext, useStylesScoped$ } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useBrowserVisibleTask$,
+  useContext,
+} from "@builder.io/qwik";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { apiSaveWorkspace } from "~/services/api";
 import ButtonLight from "~/ui/button-light";
@@ -7,22 +12,32 @@ import { Logo } from "../icons/logo";
 export default component$(() => {
   const state = useContext(ExecuteCtx);
 
+  useBrowserVisibleTask$(() => {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      document.documentElement.classList.add("dark");
+      state.theme = "vs-dark";
+      window.localStorage.theme = "dark";
+    }
+  });
+
   const saveWorkspace$ = $(async () => {
     if (state.workspace) await apiSaveWorkspace(state.workspace, state.code);
   });
 
-  const handleTheme$ = $(() =>  {
-    if(state.theme === 'vs-dark'){
-      document.documentElement.classList.remove('dark')
-      state.theme = 'vs-light'
-      window.localStorage.theme = 'light'
-    }else{
-      document.documentElement.classList.add('dark')
-      state.theme = 'vs-dark'
-      window.localStorage.theme = 'dark'
+  const handleTheme$ = $(() => {
+    if (state.theme === "vs-dark") {
+      document.documentElement.classList.remove("dark");
+      state.theme = "vs-light";
+      window.localStorage.theme = "light";
+    } else {
+      document.documentElement.classList.add("dark");
+      state.theme = "vs-dark";
+      window.localStorage.theme = "dark";
     }
- 
-})
+  });
 
   return (
     <header
@@ -44,13 +59,10 @@ export default component$(() => {
       </div>
 
       <ul class={"flex items-center gap-3 justify-end py-3"}>
-       
         <li>
-          <ButtonLight onClick$={handleTheme$}/>
+          <ButtonLight onClick$={handleTheme$} />
         </li>
       </ul>
-
- 
     </header>
   );
 });

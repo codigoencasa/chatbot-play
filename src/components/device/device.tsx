@@ -4,7 +4,7 @@ import type { QRL } from "@builder.io/qwik";
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { VITE_URL } from "~/constants";
-import { apiSaveWorkspace } from "~/services/api";
+// import { apiSaveWorkspace } from "~/services/api";
 
 export const DeviceHeader = component$(() => {
   const state = useContext(ExecuteCtx);

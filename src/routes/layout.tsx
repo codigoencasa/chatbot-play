@@ -7,7 +7,7 @@ import Header from "../components/header/header";
 export default component$(() => {
   const state = useStore<IExecute>({
     code: SAMPLE,
-    loading: false,
+    loading:true,
     preamble: PREAMBLE,
     messages: [],
     theme:'vs-light'
