@@ -29,7 +29,6 @@ export const QPlayground = component$(() => {
     const fullCode = `
       const MAIN_FUNCTION_PRINCIPAL_SCOPE = async () => {
           ${mergeCode}
-          console.log(1)
 
           if(!window.pusherJoined){
             window.pusherJoined = true

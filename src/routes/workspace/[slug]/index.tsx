@@ -32,8 +32,8 @@ export default component$(() => {
     state.workspace = slug;
 
     const data = await getCode(state.workspace)
-    state.code = data.code
-
+    if(data) state.code = data.code
+ 
     const addMessage = (inMessage: any) => {
       const msg = state.messages;
       state.messages = msg.concat([inMessage]);
