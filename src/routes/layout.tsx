@@ -10,6 +10,7 @@ export default component$(() => {
     loading: false,
     preamble: PREAMBLE,
     messages: [],
+    theme:'vs-light'
   });
 
   useContextProvider(ExecuteCtx, state);

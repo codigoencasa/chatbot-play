@@ -1,4 +1,4 @@
-import { createContext } from "@builder.io/qwik";
+import { createContextId } from "@builder.io/qwik";
 export interface IExecute {
   code: string;
   loading?: boolean;
@@ -8,6 +8,7 @@ export interface IExecute {
   running?: boolean;
   workspace?: string;
   ready?: boolean;
+  theme:string;
   messages: { message: string; direction: "in" | "out" }[];
 }
-export const ExecuteCtx = createContext<IExecute>("execute-ctx");
+export const ExecuteCtx = createContextId<IExecute>("execute-ctx");

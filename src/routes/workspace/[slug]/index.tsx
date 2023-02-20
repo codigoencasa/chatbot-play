@@ -32,7 +32,7 @@ export default component$(() => {
     state.workspace = slug;
 
     const data = await getCode(state.workspace)
-    if(data) state.code = data.code
+    // if(data) state.code = data.code
  
     const addMessage = (inMessage: any) => {
       const msg = state.messages;
@@ -48,6 +48,6 @@ export default component$(() => {
 
 export const head: DocumentHead = () => {
   return {
-    title: `Chatbot (Playground)`,
+    title: `Chatbot Play`,
   };
 };

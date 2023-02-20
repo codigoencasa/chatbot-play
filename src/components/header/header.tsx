@@ -1,43 +1,56 @@
-import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import { $, component$, useContext, useStylesScoped$ } from "@builder.io/qwik";
+import { ExecuteCtx } from "~/contexts/execute.ctx";
+import { apiSaveWorkspace } from "~/services/api";
+import ButtonLight from "~/ui/button-light";
 import { Logo } from "../icons/logo";
-import styles from "./header.css?inline";
 
 export default component$(() => {
-  useStylesScoped$(styles);
+  const state = useContext(ExecuteCtx);
+
+  const saveWorkspace$ = $(async () => {
+    if (state.workspace) await apiSaveWorkspace(state.workspace, state.code);
+  });
+
+  const handleTheme$ = $(() =>  {
+    if(state.theme === 'vs-dark'){
+      document.documentElement.classList.remove('dark')
+      state.theme = 'vs-light'
+      window.localStorage.theme = 'light'
+    }else{
+      document.documentElement.classList.add('dark')
+      state.theme = 'vs-dark'
+      window.localStorage.theme = 'dark'
+    }
+ 
+})
 
   return (
-    <header class={" border-b flex border-gray-100 "}>
-      <div class="logo ">
-        <a href="https://qwik.builder.io/" target="_blank" title="qwik">
+    <header
+      class={
+        "bg-white dark:bg-gray-900 border-b flex items-center justify-between px-4 dark:border-gray-800 border-gray-100 h-[60px]"
+      }
+    >
+      <div class="logo flex gap-3">
+        <a
+          href="https://bot-whatsapp.netlify.app/"
+          target="_blank"
+          title="Chatbot Whatsapp"
+        >
           <Logo />
         </a>
+        <button onClick$={saveWorkspace$} class={"btn-seconday"}>
+          Compartir
+        </button>
       </div>
-      <ul>
+
+      <ul class={"flex items-center gap-3 justify-end py-3"}>
+       
         <li>
-          <a
-            href="https://qwik.builder.io/docs/components/overview/"
-            target="_blank"
-          >
-            Docs
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://qwik.builder.io/examples/introduction/hello-world/"
-            target="_blank"
-          >
-            Examples
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://qwik.builder.io/tutorial/welcome/overview/"
-            target="_blank"
-          >
-            Tutorials
-          </a>
+          <ButtonLight onClick$={handleTheme$}/>
         </li>
       </ul>
+
+ 
     </header>
   );
 });

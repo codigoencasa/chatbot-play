@@ -7,6 +7,7 @@ import {
   useContext,
   useSignal,
   useStore,
+  useTask$,
 } from "@builder.io/qwik";
 
 // import prettier from "prettier";
@@ -15,11 +16,14 @@ import {
 // import parserBabel from "prettier/parser-babel";
 import MonacoEditor from "@monaco-editor/react";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
+import darkTheme from "~/assets/monaco/themes/dark-theme";
+import lightTheme from "~/assets/monaco/themes/light.theme";
+
 
 export const QMonaco = component$(() => {
   const MonacoEditor$ = qwikify$(MonacoEditor);
-
   const state = useContext(ExecuteCtx);
+
   const codeEditor = useSignal<any>();
   const loading = useSignal(false);
   const stateMonaco: any = useStore({
@@ -28,7 +32,6 @@ export const QMonaco = component$(() => {
       selectOnLineNumbers: true,
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
-      fontSize: "14px",
     },
     loadingMessage: "🚀 Cargando...",
   });
@@ -38,6 +41,7 @@ export const QMonaco = component$(() => {
   });
 
   const handleMount: any = $(async (monacoEditor: any, monaco: any) => {
+
     codeEditor.value = noSerialize(monacoEditor);
 
     const { default: traverse } = await import("@babel/traverse");
@@ -45,6 +49,7 @@ export const QMonaco = component$(() => {
     const { default: MonacoJSXHighlighter } = await import(
       "monaco-jsx-highlighter"
     );
+
 
     //jsx syntax highlight
     const babelParse = (code: any) =>
@@ -67,20 +72,27 @@ export const QMonaco = component$(() => {
     );
   });
 
+
+  const setTheme = $((monaco:any) => {
+    monaco.editor.defineTheme("vs-light", lightTheme)
+    monaco.editor.defineTheme("vs-dark", darkTheme)
+  })
+
   const handleChange = $((monacoValue: string | undefined) => {
     if (monacoValue) state.code = monacoValue;
     // await formatOnSave();
   });
 
   return (
-    <div class={"h-[calc(100vh_-_60px)]"}>
+    <div class={"h-[calc(100vh_-_60px)] monaco-editor"}>
       {loading.value ? (
         <MonacoEditor$
           onChange$={handleChange}
           onMount$={handleMount}
           language={"javascript"}
           options={stateMonaco.options}
-          theme="light"
+          theme={state.theme}
+          beforeMount={setTheme}
           className="h-full"
           loading={stateMonaco.loadingMessage}
           value={state.code}
