@@ -4,24 +4,17 @@ import type { QRL } from "@builder.io/qwik";
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { VITE_URL } from "~/constants";
+// import { apiSaveWorkspace } from "~/services/api";
 
-declare global {
-  const Pusher: any;
-}
-
-export const DeviceHeader = component$((props:{save:QRL<any>}) => {
+export const DeviceHeader = component$(() => {
   const state = useContext(ExecuteCtx);
   return (
     <div
       class={
-        "bg-[#128C7E] text-white h-[60px] content-center items-center flex gap-2 px-2 justify-between "
+        "bg-[#128C7E] dark:bg-gray-800 text-white h-[60px] content-center items-center flex gap-2 px-2 justify-between  rounded-t-lg"
       }
     >
-      <div
-        class={
-          "bg-white rounded-full flex items-center content-center w-[38px] h-[38px]"
-        }
-      >
+      <div>
         <img
           class={"object-cover rounded-full"}
           width={38}
@@ -33,15 +26,13 @@ export const DeviceHeader = component$((props:{save:QRL<any>}) => {
       <div class={" w-full flex content-center items-center px-2"}>
         <span class={" font-semibold"}>Bot</span>
       </div>
-      <div class={'flex gap-5'}>
+      <div class={"flex gap-5"}>
         <button
-          onClick$={props.save}>
-          Guardar
-        </button>
-        <button
+          class={"btn-light"}
           onClick$={() => {
             state.messages = [];
-          }}>
+          }}
+        >
           Limpiar
         </button>
       </div>
@@ -53,7 +44,7 @@ export const BodyFooter = component$((props: { messages: any[] }) => {
   return (
     <div
       class={
-        "bg-[#FEF3EE] overflow-y-auto h-full content-center  flex gap-2 p-3 justify-between "
+        "bg-[#FEF3EE] dark:bg-gray-700 overflow-y-auto h-full content-center dark:rounded-lg flex gap-2 p-3 justify-between "
       }
     >
       <ul class={"flex flex-col gap-2 font-normal w-full"}>
@@ -92,16 +83,18 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
         store.value = "";
       }}
       class={
-        "bg-white h-[60px] content-center items-center flex gap-2  rounded-b-lg justify-between "
+        "bg-white dark:bg-gray-800 h-[60px] content-center items-center flex gap-2 px-2  rounded-b-lg justify-between "
       }
     >
       <input
         value={store.value}
         onInput$={(ev: any) => (store.value = ev?.target?.value)}
-        class={"outline-none w-full h-full rounded-b-lg px-2"}
+        class={
+          "outline-none w-full h-full rounded-b-lg px-2 bg-white dark:text-white dark:bg-gray-800"
+        }
         placeholder="Mensaje..."
       />
-      <button class={""}>Enviar</button>
+      <button class={"btn-primary"}>Enviar</button>
     </form>
   );
 });
@@ -121,17 +114,6 @@ export default component$(() => {
       redirect: "follow",
     });
   });
-  const saveCode = $(async (code: string) => {
-    await fetch(`${VITE_URL}/api/${state.workspace}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        code,
-      }),
-    });
-  });
 
   const sendMessage$ = $(async (inMessage: any) => {
     state.messages = state.messages.concat({
@@ -141,13 +123,13 @@ export default component$(() => {
     await sendEvent(inMessage);
   });
 
-  const saveCode$ = $(async () => {
-    await saveCode(state.code);
-  });
-
   return (
-    <div class={"bg-white flex flex-col justify-between  h-full  w-full"}>
-      <DeviceHeader save={saveCode$} />
+    <div
+      class={
+        "bg-white dark:bg-gray-800 flex flex-col justify-between rounded-lg drop-shadow-xl border-4 dark:border-gray-800 border-white h-full  w-full"
+      }
+    >
+      <DeviceHeader />
       <BodyFooter messages={state.messages} />
       <DeviceFooter sendMessage={sendMessage$} />
     </div>

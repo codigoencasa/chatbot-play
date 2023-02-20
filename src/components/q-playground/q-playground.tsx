@@ -75,11 +75,14 @@ export const QPlayground = component$(() => {
 
   return (
     <div class={"flex "}>
-      <div class={"w-full border-r border-gray-100 "}>
+      <div class={"w-full border-r border-gray-100 dark:border-gray-900 "}>
         <QMonaco />
       </div>
-      <div class={"w-1/2"}>
-        <Device />
+
+      <div class="w-1/2 relative flex flex-col justify-center overflow-hidden bg-gray-50 dark:bg-gray-900 py-6 sm:py-12">
+        <div class="absolute p-6 pt-3  inset-0 bg-[url(https://play.tailwindcss.com/img/grid.svg)] bg-center">
+          <Device />
+        </div>
       </div>
     </div>
   );

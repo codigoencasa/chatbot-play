@@ -40,3 +40,6 @@ lerna-debug.log*
 # Netlify
 .netlify
 .env
+
+# Cloudflare
+functions/**/*.js

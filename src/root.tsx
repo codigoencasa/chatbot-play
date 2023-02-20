@@ -10,10 +10,8 @@ import globalStyles from "~/assets/styles/global.css?inline";
 import dbConnect from "./config/mongo";
 
 export default component$(() => {
-  dbConnect();
-
+  dbConnect()
   useStyles$(globalStyles);
-
   return (
     <QwikCityProvider>
       <head>

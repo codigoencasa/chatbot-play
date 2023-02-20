@@ -5,4 +5,3 @@ export const PUSHER_SK = import.meta.env.VITE_PUSHER_SK ?? "NO_PUSHER_SK";
 export const DB_URI = import.meta.env.VITE_DB_URI ?? "DB_URI";
 export const PUSHER_CLUSTER =
   import.meta.env.VITE_PUSHER_CLUSTER ?? "NO_PUSHER_CLUSTER";
-export const DEMO_ENV = import.meta.env.__APP_ENV__ ?? "NO___APP_ENV__";
