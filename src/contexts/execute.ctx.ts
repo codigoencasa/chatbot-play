@@ -2,6 +2,7 @@ import { createContextId } from "@builder.io/qwik";
 export interface IExecute {
   code: string;
   loading?: boolean;
+  loadingMessage?: string;
   result?: string;
   preamble?: string;
   after?: string;
