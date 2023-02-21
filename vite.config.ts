@@ -22,7 +22,8 @@ export default defineConfig(({ mode}) => {
         VITE_PUSHER_ID:process.env.VITE_PUSHER_ID,
         VITE_PUSHER_PK:process.env.VITE_PUSHER_PK,
         VITE_PUSHER_SK:process.env.VITE_PUSHER_SK,
-        VITE_PUSHER_CLUSTER:process.env.VITE_PUSHER_CLUSTER
+        VITE_PUSHER_CLUSTER:process.env.VITE_PUSHER_CLUSTER,
+        VITE_DB_URI:process.env.VITE_DB_URI
       },
     )
   }

@@ -6,13 +6,41 @@
  *
  */
 @import "prism.css";
+@import "fonts.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer components {
   html {
     font-family: "Inter var", sans-serif;
+  }
+
+  .btn-primary {
+    @apply relative duration-100 flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 hover:bg-[#034941] bg-[#128C7E] text-white shadow-sm;
+  }
+
+  .btn-light {
+    @apply relative duration-100 cursor-pointer flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 hover:bg-gray-200 dark:hover:bg-gray-700;
+  }
+
+  .btn-seconday {
+    @apply relative duration-100 flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 hover:bg-sky-400 bg-sky-500 text-white shadow-sm;
+  }
+
+  .monaco-editor *:not(div[style*="50000px"]) {
+    /* @apply font-ubuntu  */
+  }
+
+  .monaco-editor .monaco-scrollable-element {
+    @apply scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100;
+  }
+
+  body{
+    @apply bg-white dark:bg-gray-900
+  }
+
+  body * {
+    @apply transition-colors duration-75;
   }
 }
 

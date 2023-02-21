@@ -24,16 +24,16 @@ export async function executeCode(codeString: string) {
   return func();
 }
 
-export function getCompileCode(rawCode: string, entryPoint: string) {
+export function getCompileCode(rawCode: string, entryPoint: string, cb?:Function) {
   return async () => {
     try {
       const result = await esbuild.build({
         entryPoints: [`${entryPoint}`],
         bundle: true,
         write: false,
-        minify: false,
+        minify: true,
         outdir: "/",
-        plugins: [unpkgBotenvPlugin(), unpkgFetchPlugin(rawCode)],
+        plugins: [unpkgBotenvPlugin(), unpkgFetchPlugin(rawCode, cb)],
         metafile: true,
         allowOverwrite: true,
       });

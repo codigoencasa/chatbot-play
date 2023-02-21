@@ -4,24 +4,20 @@ import type { QRL } from "@builder.io/qwik";
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { VITE_URL } from "~/constants";
-
-declare global {
-  const Pusher: any;
-}
+import DeviceText from "./device-text";
+import DeviceMedia from "./device-media";
+import Button from "~/ui/button";
+// import { apiSaveWorkspace } from "~/services/api";
 
 export const DeviceHeader = component$(() => {
   const state = useContext(ExecuteCtx);
   return (
     <div
       class={
-        "bg-[#128C7E] text-white h-[60px] content-center items-center flex gap-2 px-2 justify-between "
+        "bg-[#128C7E] dark:bg-gray-800 text-white h-[60px] content-center items-center flex gap-2 px-2 justify-between  rounded-t-lg"
       }
     >
-      <div
-        class={
-          "bg-white rounded-full flex items-center content-center w-[38px] h-[38px]"
-        }
-      >
+      <div>
         <img
           class={"object-cover rounded-full"}
           width={38}
@@ -33,24 +29,23 @@ export const DeviceHeader = component$(() => {
       <div class={" w-full flex content-center items-center px-2"}>
         <span class={" font-semibold"}>Bot</span>
       </div>
-      <div>
-        <button
+      <div class={"flex gap-5"}>
+        <Button
+          label="Limpiar"
           onClick$={() => {
             state.messages = [];
           }}
-        >
-          Limpiar
-        </button>
+        />
       </div>
     </div>
   );
 });
 
-export const BodyFooter = component$((props: { messages: any[] }) => {
+export const Body = component$((props: { messages: any[] }) => {
   return (
     <div
       class={
-        "bg-[#FEF3EE] overflow-y-auto h-full content-center  flex gap-2 p-3 justify-between "
+        "bg-[#FEF3EE] dark:bg-gray-700 scrollbar-thumb-gray-300 scrollbar-track-slate-50 dark:scrollbar-thumb-blue-100/20 dark:scrollbar-track-gray-700 scrollbar-thin overflow-y-auto h-full content-center dark:rounded-lg flex gap-2 p-3 justify-between "
       }
     >
       <ul class={"flex flex-col gap-2 font-normal w-full"}>
@@ -61,7 +56,7 @@ export const BodyFooter = component$((props: { messages: any[] }) => {
               "w-fsull flex justify-send": msg?.direction === "out",
             }}
           >
-            <span
+            <div
               class={{
                 "bg-[#DCF7C9] shadow px-2 py-1 rounded-lg":
                   msg?.direction === "in",
@@ -69,8 +64,9 @@ export const BodyFooter = component$((props: { messages: any[] }) => {
                   msg?.direction === "out",
               }}
             >
-              {msg?.message}
-            </span>
+              <DeviceText text={msg.message} />
+              <DeviceMedia media={msg?.file} />
+            </div>
           </li>
         ))}
       </ul>
@@ -89,16 +85,18 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
         store.value = "";
       }}
       class={
-        "bg-white h-[60px] content-center items-center flex gap-2  rounded-b-lg justify-between "
+        "bg-white dark:bg-gray-800 h-[60px] content-center items-center flex gap-2 px-2  rounded-b-lg justify-between "
       }
     >
       <input
         value={store.value}
         onInput$={(ev: any) => (store.value = ev?.target?.value)}
-        class={"outline-none w-full h-full rounded-b-lg px-2"}
+        class={
+          "outline-none w-full h-full rounded-b-lg px-2 bg-white dark:text-white dark:bg-gray-800"
+        }
         placeholder="Mensaje..."
       />
-      <button class={""}>Enviar</button>
+      <button class={"btn-primary"}>Enviar</button>
     </form>
   );
 });
@@ -106,7 +104,7 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
 export default component$(() => {
   const state = useContext(ExecuteCtx);
 
-  const fakeAuthService = $(async (message: string) => {
+  const sendEvent = $(async (message: string) => {
     await fetch(`${VITE_URL}/api/${state.workspace}`, {
       method: "POST",
       headers: {
@@ -124,13 +122,17 @@ export default component$(() => {
       message: inMessage,
       direction: "in",
     });
-    await fakeAuthService(inMessage);
+    await sendEvent(inMessage);
   });
 
   return (
-    <div class={"bg-white flex flex-col justify-between  h-full  w-full"}>
+    <div
+      class={
+        "bg-white dark:bg-gray-800 flex flex-col justify-between rounded-lg drop-shadow-xl border-4 dark:border-gray-800 border-white h-full  w-full"
+      }
+    >
       <DeviceHeader />
-      <BodyFooter messages={state.messages} />
+      <Body messages={state.messages} />
       <DeviceFooter sendMessage={sendMessage$} />
     </div>
   );

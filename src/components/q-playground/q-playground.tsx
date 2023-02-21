@@ -3,6 +3,7 @@ import {
   component$,
   useBrowserVisibleTask$,
   useContext,
+  useStore,
 } from "@builder.io/qwik";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { executeCode, getCompileCode } from "~/utils/execute-code";
@@ -14,9 +15,24 @@ declare global {
     idRuntime: any;
   }
 }
+export const BoxLoadings = component$((props:{loadingState:any}) => {
+  return (
+    <div
+      class={
+        "absolute bottom-0 h-64 drop-shadow-xl p-4 dark:text-white w-full bg-gray-800 z-10"
+      }
+    >
+      {props.loadingState.list.map((pk:any) => <div>{pk}</div> )}
+    </div>
+  );
+});
 
 export const QPlayground = component$(() => {
   const state = useContext(ExecuteCtx);
+  const loadingState = useStore({
+    list:[],
+    loading:false
+  })
 
   const handlePlay = $(async () => {
     if (!state.ready) return;
@@ -29,11 +45,11 @@ export const QPlayground = component$(() => {
     const fullCode = `
       const MAIN_FUNCTION_PRINCIPAL_SCOPE = async () => {
           ${mergeCode}
-          console.log(1)
 
           if(!window.pusherJoined){
             window.pusherJoined = true
             window.pusherChannel.bind('my-event', async (data) => {
+              console.log(data)
               window.pusherJoined = true
               if(data.from === '${state.workspace}'){
                 await window.delaySendMessage(0, 'message', {
@@ -51,7 +67,15 @@ export const QPlayground = component$(() => {
       }
       MAIN_FUNCTION_PRINCIPAL_SCOPE().then()
     `;
-    const resultExection = await getCompileCode(fullCode, "index.js")();
+
+    const resultExection = await getCompileCode(
+      fullCode,
+      "index.js",
+      ((pks:any) => {
+        loadingState.list = pks?.loadingPks ?? []
+        loadingState.loading = !!pks?.loading 
+      })
+    )();
     state.result = resultExection?.outputFiles[0].text;
     if (state.result) await executeCode(state.result);
 
@@ -75,12 +99,22 @@ export const QPlayground = component$(() => {
   });
 
   return (
-    <div class={"flex "}>
-      <div class={"w-full border-r border-gray-100 "}>
-        <QMonaco />
-      </div>
-      <div class={"w-1/2"}>
-        <Device />
+    <div class={"relative"}>
+      <div class={"flex"}>
+        <div
+          class={
+            "w-full relative border-r border-gray-100 dark:border-gray-900 "
+          }
+        >
+          {(loadingState.loading) ? <BoxLoadings loadingState={loadingState} /> : null }
+          <QMonaco />
+        </div>
+
+        <div class="w-1/2 relative flex flex-col justify-center overflow-hidden bg-gray-50 dark:bg-gray-900 py-6 sm:py-12">
+          <div class="absolute p-6 pt-3  inset-0 bg-[url(https://play.tailwindcss.com/img/grid.svg)] bg-center">
+            <Device />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { PUSHER_CLUSTER, PUSHER_PK } from "~/constants";
 
 declare global {
+  let Pusher:any
   interface Window {
     bc: Function;
     pusher: any;

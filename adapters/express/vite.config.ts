@@ -1,6 +1,5 @@
 import { expressAdapter } from '@builder.io/qwik-city/adapters/express/vite';
 import { extendConfig } from '@builder.io/qwik-city/vite';
-import rollupNodePolyFill from 'rollup-plugin-polyfill-node'
 import baseConfig from '../../vite.config';
 
 export default extendConfig(baseConfig, () => {
@@ -8,9 +7,6 @@ export default extendConfig(baseConfig, () => {
     build: {
       ssr: true,
       rollupOptions: {
-        plugins: [
-          rollupNodePolyFill()
-        ],
         input: ['src/entry.express.tsx', '@qwik-city-plan'],
       },
     },
