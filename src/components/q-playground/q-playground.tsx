@@ -33,6 +33,7 @@ export const QPlayground = component$(() => {
           if(!window.pusherJoined){
             window.pusherJoined = true
             window.pusherChannel.bind('my-event', async (data) => {
+              console.log(data)
               window.pusherJoined = true
               if(data.from === '${state.workspace}'){
                 await window.delaySendMessage(0, 'message', {

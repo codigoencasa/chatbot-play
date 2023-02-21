@@ -4,6 +4,9 @@ import type { QRL } from "@builder.io/qwik";
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { VITE_URL } from "~/constants";
+import DeviceText from "./device-text";
+import DeviceMedia from "./device-media";
+import Button from "~/ui/button";
 // import { apiSaveWorkspace } from "~/services/api";
 
 export const DeviceHeader = component$(() => {
@@ -27,24 +30,22 @@ export const DeviceHeader = component$(() => {
         <span class={" font-semibold"}>Bot</span>
       </div>
       <div class={"flex gap-5"}>
-        <button
-          class={"btn-light"}
+        <Button
+          label="Limpiar"
           onClick$={() => {
             state.messages = [];
           }}
-        >
-          Limpiar
-        </button>
+        />
       </div>
     </div>
   );
 });
 
-export const BodyFooter = component$((props: { messages: any[] }) => {
+export const Body = component$((props: { messages: any[] }) => {
   return (
     <div
       class={
-        "bg-[#FEF3EE] dark:bg-gray-700 overflow-y-auto h-full content-center dark:rounded-lg flex gap-2 p-3 justify-between "
+        "bg-[#FEF3EE] dark:bg-gray-700 scrollbar-thumb-gray-300 scrollbar-track-slate-50 dark:scrollbar-thumb-blue-100/20 dark:scrollbar-track-gray-700 scrollbar-thin overflow-y-auto h-full content-center dark:rounded-lg flex gap-2 p-3 justify-between "
       }
     >
       <ul class={"flex flex-col gap-2 font-normal w-full"}>
@@ -55,7 +56,7 @@ export const BodyFooter = component$((props: { messages: any[] }) => {
               "w-fsull flex justify-send": msg?.direction === "out",
             }}
           >
-            <span
+            <div
               class={{
                 "bg-[#DCF7C9] shadow px-2 py-1 rounded-lg":
                   msg?.direction === "in",
@@ -63,8 +64,9 @@ export const BodyFooter = component$((props: { messages: any[] }) => {
                   msg?.direction === "out",
               }}
             >
-              {msg?.message}
-            </span>
+              <DeviceText text={msg.message} />
+              <DeviceMedia media={msg?.file} />
+            </div>
           </li>
         ))}
       </ul>
@@ -130,7 +132,7 @@ export default component$(() => {
       }
     >
       <DeviceHeader />
-      <BodyFooter messages={state.messages} />
+      <Body messages={state.messages} />
       <DeviceFooter sendMessage={sendMessage$} />
     </div>
   );
