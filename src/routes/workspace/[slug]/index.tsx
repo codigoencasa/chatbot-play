@@ -35,6 +35,7 @@ export default component$(() => {
     state.code = data?.code ?? SAMPLE;
 
     const addMessage = (inMessage: any) => {
+      console.log(inMessage)
       const msg = state.messages;
       state.messages = msg.concat([inMessage]);
     };

@@ -10,7 +10,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
 @layer components {
   html {
     font-family: "Inter var", sans-serif;
@@ -29,7 +28,7 @@
   }
 
   .monaco-editor *:not(div[style*="50000px"]) {
-    @apply font-ubuntu tracking-wide text-sm;
+    /* @apply font-ubuntu  */
   }
 
   .monaco-editor .monaco-scrollable-element {
