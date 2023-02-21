@@ -35,19 +35,19 @@ export default component$(() => {
     state.code = data?.code ?? SAMPLE;
 
     const addMessage = (inMessage: any) => {
-      console.log(inMessage)
       const msg = state.messages;
       state.messages = msg.concat([inMessage]);
     };
     initBroadcastChannel(addMessage);
     await initEsbuild();
     state.ready = true;
+    state.loadingMessage = undefined
     state.loading = false;
   });
 
   return (
     <div>
-      {state.loading ? <Loading /> : null}
+      {state.loading ? <Loading message={state.loadingMessage} /> : null}
       <QPlayground />
     </div>
   );

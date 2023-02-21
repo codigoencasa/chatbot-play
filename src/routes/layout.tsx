@@ -12,6 +12,7 @@ export default component$(() => {
   const state = useStore<IExecute>({
     code: '',
     loading: true,
+    loadingMessage:'Loading',
     preamble: PREAMBLE,
     messages: [],
     theme: "vs-light",

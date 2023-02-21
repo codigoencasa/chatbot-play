@@ -7,8 +7,10 @@ export const fileCache = localForage.createInstance({
 });
 
 export const unpkgFetchPlugin = (
-  inputCode: string | undefined
+  inputCode: string | undefined, cb?:Function
 ): esbuild.Plugin => {
+  let loading = 0
+  const loadingPks:string[] = []
   return {
     name: "unpkg-fetch-plugin",
     setup(build: esbuild.PluginBuild) {
@@ -31,7 +33,10 @@ export const unpkgFetchPlugin = (
       //=================================================
 
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
+        loading++
+        loadingPks.push(args.path)
         console.log(`...fetching ${args.path}`);
+
         const { data, request } = await axios.get(args.path);
 
         const result: esbuild.OnLoadResult = {
@@ -42,6 +47,8 @@ export const unpkgFetchPlugin = (
         //store response in cache
         await fileCache.setItem(args.path, result);
         console.log("end of fetching");
+        loading--
+        if(cb) cb(({loading, loadingPks}))
         return result;
       });
     },
