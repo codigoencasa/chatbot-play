@@ -5,15 +5,19 @@ import {
   useContext,
   useSignal,
 } from "@builder.io/qwik";
+import { VITE_URL } from "~/constants";
 import { ExecuteCtx } from "~/contexts/execute.ctx";
 import { apiSaveWorkspace } from "~/services/api";
 import ButtonLight from "~/ui/button-light";
 import Toast from "~/ui/toast";
 import { Logo } from "../icons/logo";
+import Modal from "../modal/modal";
+
 
 export default component$(() => {
   const state = useContext(ExecuteCtx);
   const saving = useSignal(false);
+  const showModal = useSignal(false);
 
   useBrowserVisibleTask$(() => {
     if (
@@ -30,6 +34,7 @@ export default component$(() => {
     saving.value = true;
     if (state.workspace) await apiSaveWorkspace(state.workspace, state.code);
     saving.value = false;
+    showModal.value = true
   });
 
   const handleTheme$ = $(() => {
@@ -46,6 +51,15 @@ export default component$(() => {
 
   return (
     <>
+      <Modal show={showModal}>
+          <input
+            readOnly
+            value={`${VITE_URL}/workspace/${state.workspace}`}
+            class={
+              "drop-shadow-2xl text-lg dark:text-white  border-gray-700 dark:border-gray-500 border-2 bg-white dark:bg-white/10 w-[400px] p-2 rounded-lg"
+            }
+          />
+        </Modal>
       <header
         class={
           "bg-white dark:bg-gray-900 border-b flex items-center justify-between px-4 dark:border-gray-800 border-gray-100 h-[60px]"

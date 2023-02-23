@@ -38,6 +38,7 @@ export const unpkgBotenvPlugin = (): esbuild.Plugin => {
 
       build.onResolve({ filter: /^\.+\// }, (args: esbuild.OnResolveArgs) => {
         return {
+          namePkg:args.resolveDir,
           namespace: "a",
           path: new URL(args.path, `https://unpkg.com${args.resolveDir}/`).href,
         };

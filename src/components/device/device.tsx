@@ -1,4 +1,4 @@
-import { $, component$, useContext, useSignal } from "@builder.io/qwik";
+import { $, component$, Signal, useContext, useSignal } from "@builder.io/qwik";
 import type { QRL } from "@builder.io/qwik";
 // @ts-ignore
 import logoSrc from "~/assets/images/chatbot-whatsapp.png?width=64&height=64&png";
@@ -7,6 +7,7 @@ import { VITE_URL } from "~/constants";
 import DeviceText from "./device-text";
 import DeviceMedia from "./device-media";
 import Button from "~/ui/button";
+import DeviceButton from "./device-button";
 // import { apiSaveWorkspace } from "~/services/api";
 
 export const DeviceHeader = component$(() => {
@@ -41,7 +42,7 @@ export const DeviceHeader = component$(() => {
   );
 });
 
-export const Body = component$((props: { messages: any[] }) => {
+export const Body = component$((props: { messages: any[], sendMessage: QRL<any>, loading:Signal<boolean>   }) => {
   return (
     <div
       class={
@@ -56,16 +57,25 @@ export const Body = component$((props: { messages: any[] }) => {
               "w-fsull flex justify-send": msg?.direction === "out",
             }}
           >
-            <div
-              class={{
-                "bg-[#DCF7C9] shadow px-2 py-1 rounded-lg":
-                  msg?.direction === "in",
-                "bg-white shadow px-2 py-1 rounded-lg":
-                  msg?.direction === "out",
-              }}
-            >
-              <DeviceText text={msg.message} />
-              <DeviceMedia media={msg?.file} />
+            <div class={"flex flex-col gap-1"}>
+              {!msg?.templateButtons?.length ? (
+                <div
+                  class={{
+                    "bg-[#DCF7C9] shadow px-2 py-1 rounded-lg":
+                      msg?.direction === "in",
+                    "bg-white shadow px-2 py-1 rounded-lg":
+                      msg?.direction === "out",
+                  }}
+                >
+                  <DeviceText text={msg.message} />
+                  <DeviceMedia media={msg?.file} />
+                </div>
+              ) : null}
+              {msg?.templateButtons?.map((btn: any) => (
+                <DeviceButton onClick$={() => {
+                  props.sendMessage(btn?.buttonText?.displayText);
+                }} disabled={props.loading.value} text={btn?.buttonText?.displayText} />
+              ))}
             </div>
           </li>
         ))}
@@ -74,13 +84,14 @@ export const Body = component$((props: { messages: any[] }) => {
   );
 });
 
-export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
+export const DeviceFooter = component$((props: { sendMessage: QRL<any>, loading:Signal<boolean> }) => {
   const store = useSignal<string>();
 
   return (
     <form
       preventdefault:submit
       onSubmit$={() => {
+        props.loading.value = true
         props.sendMessage(store.value);
         store.value = "";
       }}
@@ -96,13 +107,14 @@ export const DeviceFooter = component$((props: { sendMessage: QRL<any> }) => {
         }
         placeholder="Mensaje..."
       />
-      <button class={"btn-primary"}>Enviar</button>
+      <button disabled={props.loading.value} class={"btn-primary disabled:opacity-30"}>Enviar</button>
     </form>
   );
 });
 
 export default component$(() => {
   const state = useContext(ExecuteCtx);
+  const stateSending = useSignal(false)
 
   const sendEvent = $(async (message: string) => {
     await fetch(`${VITE_URL}/api/${state.workspace}`, {
@@ -118,11 +130,13 @@ export default component$(() => {
   });
 
   const sendMessage$ = $(async (inMessage: any) => {
+    stateSending.value = true
     state.messages = state.messages.concat({
       message: inMessage,
       direction: "in",
     });
     await sendEvent(inMessage);
+    stateSending.value = false
   });
 
   return (
@@ -132,8 +146,8 @@ export default component$(() => {
       }
     >
       <DeviceHeader />
-      <Body messages={state.messages} />
-      <DeviceFooter sendMessage={sendMessage$} />
+      <Body messages={state.messages} sendMessage={sendMessage$} loading={stateSending} />
+      <DeviceFooter sendMessage={sendMessage$} loading={stateSending} />
     </div>
   );
 });
