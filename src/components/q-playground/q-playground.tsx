@@ -15,14 +15,18 @@ declare global {
     idRuntime: any;
   }
 }
-export const BoxLoadings = component$((props:{loadingState:any}) => {
+export const BoxLoadings = component$((props: { loadingState: any }) => {
   return (
     <div
       class={
-        "absolute bottom-0 h-64 drop-shadow-xl p-4 dark:text-white w-full bg-gray-800 z-10"
+        "absolute flex flex-col gap-1 bottom-0 h-64 drop-shadow-xl p-4 dark:text-white w-full border border-t rounded-tr-lg dark:border-gray-500 bg-white dark:bg-gray-800 z-10"
       }
     >
-      {props.loadingState.list.map((pk:any) => <div>{pk}</div> )}
+      {props.loadingState.list.map((pk: any) => (
+        <div class={"truncate p-1 px-2 rounded-lg bg-slate-700"}>
+          🚀 Instalando {pk}...
+        </div>
+      ))}
     </div>
   );
 });
@@ -30,9 +34,9 @@ export const BoxLoadings = component$((props:{loadingState:any}) => {
 export const QPlayground = component$(() => {
   const state = useContext(ExecuteCtx);
   const loadingState = useStore({
-    list:[],
-    loading:false
-  })
+    list: [],
+    loading: false,
+  });
 
   const handlePlay = $(async () => {
     if (!state.ready) return;
@@ -71,10 +75,10 @@ export const QPlayground = component$(() => {
     const resultExection = await getCompileCode(
       fullCode,
       "index.js",
-      ((pks:any) => {
-        loadingState.list = pks?.loadingPks ?? []
-        loadingState.loading = !!pks?.loading 
-      })
+      (pks: any) => {
+        loadingState.list = pks?.loadingPks ?? [];
+        loadingState.loading = !!pks?.loading;
+      }
     )();
     state.result = resultExection?.outputFiles[0].text;
     if (state.result) await executeCode(state.result);
@@ -100,13 +104,16 @@ export const QPlayground = component$(() => {
 
   return (
     <div class={"relative"}>
+ 
       <div class={"flex"}>
         <div
           class={
             "w-full relative border-r border-gray-100 dark:border-gray-900 "
           }
         >
-          {(loadingState.loading) ? <BoxLoadings loadingState={loadingState} /> : null }
+          {loadingState.loading ? (
+            <BoxLoadings loadingState={loadingState} />
+          ) : null}
           <QMonaco />
         </div>
 

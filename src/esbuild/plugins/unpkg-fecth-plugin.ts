@@ -35,16 +35,14 @@ export const unpkgFetchPlugin = (
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
         loading++
         loadingPks.push(args.path)
-        console.log(`...fetching ${args.path}`);
 
         const { data, request } = await axios.get(args.path);
-
         const result: esbuild.OnLoadResult = {
           loader: "js",
           contents: data,
           resolveDir: new URL("./", request.responseURL).pathname,
         };
-        //store response in cache
+        
         await fileCache.setItem(args.path, result);
         console.log("end of fetching");
         loading--

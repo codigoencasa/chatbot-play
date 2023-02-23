@@ -22,6 +22,7 @@ export const initBroadcastChannel = (addMessage: any) => {
   if (window && !window.bc) {
     window.bc = (cb: Function) => {
       const data = cb();
+      console.log(data)
       addMessage(data);
     };
   }
