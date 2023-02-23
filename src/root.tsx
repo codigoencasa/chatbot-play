@@ -8,6 +8,7 @@ import { RouterHead } from "./components/router-head/router-head";
 
 import globalStyles from "~/assets/styles/global.css?inline";
 import dbConnect from "./config/mongo";
+import { Social } from "./components/social/social";
 
 export default component$(() => {
   dbConnect()
@@ -18,6 +19,7 @@ export default component$(() => {
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
+        <Social />
       </head>
       <body lang="en">
         <RouterOutlet />
