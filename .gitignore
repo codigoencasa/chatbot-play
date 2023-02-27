@@ -43,3 +43,6 @@ lerna-debug.log*
 *.env
 # Cloudflare
 functions/**/*.js
+
+# Local Netlify folder
+.netlify
